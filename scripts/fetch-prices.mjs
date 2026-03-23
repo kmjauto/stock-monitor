@@ -39,37 +39,65 @@ if (fs.existsSync(ALERT_LOG)) {
   catch { alertHistory = {}; }
 }
 
-// ── Yahoo Finance 개별 조회 (v7/quote — 애프터마켓 포함) ──────────────────
+// ── Yahoo Finance 개별 조회 (v8/chart — 프리/애프터마켓 포함) ─────────────
 async function fetchYahooOne(ticker) {
-  const fields = 'regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketPreviousClose,regularMarketDayHigh,regularMarketDayLow,postMarketPrice,postMarketChange,postMarketChangePercent,preMarketPrice,preMarketChange,preMarketChangePercent,currency,marketState';
-  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(ticker)}&fields=${fields}`;
+  const url = `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1m&range=1d&includePrePost=true`;
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
     });
-    if (!res.ok) { console.error(`Yahoo ${res.status}: ${ticker}`); return null; }
-    const data = await res.json();
-    const q = data?.quoteResponse?.result?.[0];
-    if (!q) return null;
+    if (!res.ok) { console.error(`Yahoo v8 ${res.status}: ${ticker}`); return null; }
+    const data  = await res.json();
+    const result = data?.chart?.result?.[0];
+    if (!result) return null;
+
+    const meta       = result.meta;
+    const timestamps = result.timestamp      || [];
+    const closes     = result.indicators?.quote?.[0]?.close || [];
+
+    // 가장 최신 유효 가격
+    let currentPrice = null;
+    for (let i = timestamps.length - 1; i >= 0; i--) {
+      if (closes[i] != null) { currentPrice = closes[i]; break; }
+    }
+    const regularClose = meta.regularMarketPrice ?? currentPrice;
+    const prevClose    = meta.chartPreviousClose ?? null;
+
+    // marketState 계산 (currentTradingPeriod 기준)
+    const now = Math.floor(Date.now() / 1000);
+    const tp  = meta.currentTradingPeriod;
+    let marketState = 'CLOSED';
+    if (tp) {
+      if (now >= tp.pre?.start     && now < tp.pre?.end)     marketState = 'PRE';
+      else if (now >= tp.regular?.start && now < tp.regular?.end) marketState = 'REGULAR';
+      else if (now >= tp.post?.start    && now < tp.post?.end)    marketState = 'POST';
+    }
+
+    // 표시 가격: 프리/애프터는 최신 1분봉, 정규장/휴장은 정규 종가
+    const displayPrice = (marketState === 'PRE' || marketState === 'POST')
+      ? (currentPrice ?? regularClose)
+      : regularClose;
+    const change        = prevClose && displayPrice != null ? displayPrice - prevClose : null;
+    const changePercent = prevClose && change != null ? (change / prevClose) * 100 : null;
 
     return {
-      price:            q.regularMarketPrice           ?? null,
-      change:           q.regularMarketChange          ?? null,
-      changePercent:    q.regularMarketChangePercent   ?? null,
-      prevClose:        q.regularMarketPreviousClose   ?? null,
-      high:             q.regularMarketDayHigh         ?? null,
-      low:              q.regularMarketDayLow          ?? null,
-      currency:         q.currency                     ?? null,
-      marketState:      q.marketState                  ?? 'CLOSED',
-      postMarketPrice:  q.postMarketPrice              ?? null,
-      postMarketChange: q.postMarketChange             ?? null,
-      postMarketChangePct: q.postMarketChangePercent   ?? null,
-      preMarketPrice:   q.preMarketPrice               ?? null,
-      preMarketChange:  q.preMarketChange              ?? null,
-      preMarketChangePct: q.preMarketChangePercent     ?? null,
+      price:        regularClose,
+      change:       marketState === 'REGULAR' ? change : (regularClose && prevClose ? regularClose - prevClose : null),
+      changePercent: marketState === 'REGULAR' ? changePercent : (regularClose && prevClose ? ((regularClose - prevClose) / prevClose) * 100 : null),
+      prevClose,
+      high:         null,
+      low:          null,
+      currency:     meta.currency ?? null,
+      marketState,
+      preMarketPrice:    marketState === 'PRE'  ? displayPrice : null,
+      preMarketChange:   marketState === 'PRE'  ? change       : null,
+      preMarketChangePct: marketState === 'PRE' ? changePercent : null,
+      postMarketPrice:    marketState === 'POST' ? displayPrice : null,
+      postMarketChange:   marketState === 'POST' ? change       : null,
+      postMarketChangePct: marketState === 'POST' ? changePercent : null,
     };
   } catch (e) {
-    console.error(`Yahoo fetch 오류 [${ticker}]:`, e.message);
+    console.error(`Yahoo v8 오류 [${ticker}]:`, e.message);
     return null;
   }
 }

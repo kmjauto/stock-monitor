@@ -1,0 +1,155 @@
+{
+  "lastUpdated": "2026-03-23T03:09:51.242Z",
+  "stocks": {
+    "SLV": {
+      "price": 61.52,
+      "change": -4.160000000000004,
+      "changePercent": -6.333739342265535,
+      "prevClose": 65.68,
+      "high": 64.95,
+      "low": 61.25,
+      "currency": "USD",
+      "marketState": "CLOSED"
+    },
+    "PPLT": {
+      "price": 174.25,
+      "change": -4.5,
+      "changePercent": -2.5174825174825175,
+      "prevClose": 178.75,
+      "high": 181.84,
+      "low": 173.745,
+      "currency": "USD",
+      "marketState": "CLOSED"
+    },
+    "139230.KS": {
+      "price": 15190,
+      "change": -945,
+      "changePercent": -5.856832971800434,
+      "prevClose": 16135,
+      "high": 15760,
+      "low": 15040,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "000720.KS": {
+      "price": 154500,
+      "change": -9500,
+      "changePercent": -5.7926829268292686,
+      "prevClose": 164000,
+      "high": 165600,
+      "low": 153600,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "028050.KS": {
+      "price": 36300,
+      "change": 1000,
+      "changePercent": 2.8328611898017,
+      "prevClose": 35300,
+      "high": 40700,
+      "low": 35850,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "003490.KS": {
+      "price": 24650,
+      "change": -1700,
+      "changePercent": -6.451612903225806,
+      "prevClose": 26350,
+      "high": 26050,
+      "low": 24600,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "010120.KS": {
+      "price": 840000,
+      "change": -46000,
+      "changePercent": -5.191873589164786,
+      "prevClose": 886000,
+      "high": 865000,
+      "low": 824000,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "298040.KS": {
+      "price": 2609000,
+      "change": -126000,
+      "changePercent": -4.606946983546618,
+      "prevClose": 2735000,
+      "high": 2660000,
+      "low": 2550000,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "034020.KS": {
+      "price": 102600,
+      "change": -7000,
+      "changePercent": -6.386861313868613,
+      "prevClose": 109600,
+      "high": 107200,
+      "low": 100900,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "TSLA": {
+      "price": 367.96,
+      "change": -12.340000000000032,
+      "changePercent": -3.2448067315277496,
+      "prevClose": 380.3,
+      "high": 379.89,
+      "low": 364.46,
+      "currency": "USD",
+      "marketState": "CLOSED"
+    },
+    "005490.KS": {
+      "price": 329000,
+      "change": -14500,
+      "changePercent": -4.2212518195050945,
+      "prevClose": 343500,
+      "high": 340000,
+      "low": 326500,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "454910.KS": {
+      "price": 84500,
+      "change": -4800,
+      "changePercent": -5.375139977603583,
+      "prevClose": 89300,
+      "high": 86800,
+      "low": 82700,
+      "currency": "KRW",
+      "marketState": "CLOSED"
+    },
+    "BTC-USD": {
+      "price": 68483,
+      "change": -729.8128267077499,
+      "changePercent": -1.0544475753861149,
+      "prevClose": 69212.81282670776,
+      "high": null,
+      "low": null,
+      "currency": "USD",
+      "marketState": "REGULAR"
+    },
+    "SOL-USD": {
+      "price": 86.93,
+      "change": -1.0747100228582176,
+      "changePercent": -1.221196027552473,
+      "prevClose": 88.00471002285822,
+      "high": null,
+      "low": null,
+      "currency": "USD",
+      "marketState": "REGULAR"
+    },
+    "XRP-USD": {
+      "price": 1.39,
+      "change": -0.027153956980312716,
+      "changePercent": -1.916090827433645,
+      "prevClose": 1.4171539569803127,
+      "high": null,
+      "low": null,
+      "currency": "USD",
+      "marketState": "REGULAR"
+    }
+  }
+}

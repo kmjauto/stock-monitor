@@ -1,0 +1,126 @@
+{
+  "holdings": [
+    {
+      "ticker": "SLV",
+      "name": "은 ETF (SLV)",
+      "category": "원자재",
+      "currency": "USD",
+      "alerts": { "buy1": 59, "buy2": 55, "sell1": 68 },
+      "notes": "1차 추매 $59 / 2차 추매 $55 / 익절 $68"
+    },
+    {
+      "ticker": "PPLT",
+      "name": "플래티넘 ETF (PPLT)",
+      "category": "원자재",
+      "currency": "USD",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "139230.KS",
+      "name": "TIGER 구리실물",
+      "category": "원자재",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": ""
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "000720.KS",
+      "name": "현대건설",
+      "category": "이란전쟁",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "이란 분쟁 시 급등 예상"
+    },
+    {
+      "ticker": "028050.KS",
+      "name": "삼성E&A",
+      "category": "이란전쟁",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "이란 분쟁 시 급등 예상"
+    },
+    {
+      "ticker": "003490.KS",
+      "name": "대한항공",
+      "category": "이란전쟁",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "이란 분쟁 시 급등 예상"
+    },
+    {
+      "ticker": "010120.KS",
+      "name": "LS Electric",
+      "category": "금리인하",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "금리 인하 시 진입"
+    },
+    {
+      "ticker": "298040.KS",
+      "name": "효성중공업",
+      "category": "금리인하",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "금리 인하 시 진입"
+    },
+    {
+      "ticker": "034020.KS",
+      "name": "두산에너빌리티",
+      "category": "금리인하",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": "금리 인하 시 진입"
+    },
+    {
+      "ticker": "TSLA",
+      "name": "테슬라",
+      "category": "기타",
+      "currency": "USD",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "005490.KS",
+      "name": "POSCO홀딩스",
+      "category": "기타",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "454910.KS",
+      "name": "두산로보틱스",
+      "category": "기타",
+      "currency": "KRW",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "BTC-USD",
+      "name": "비트코인",
+      "category": "크립토",
+      "currency": "USD",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "SOL-USD",
+      "name": "솔라나",
+      "category": "크립토",
+      "currency": "USD",
+      "alerts": {},
+      "notes": ""
+    },
+    {
+      "ticker": "XRP-USD",
+      "name": "XRP",
+      "category": "크립토",
+      "currency": "USD",
+      "alerts": {},
+      "notes": ""
+    }
+  ]
+}

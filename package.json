@@ -1,0 +1,8 @@
+{
+  "name": "stock-monitor",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "update": "node scripts/fetch-prices.mjs"
+  }
+}

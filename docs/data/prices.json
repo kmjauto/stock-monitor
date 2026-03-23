@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-23T17:40:05.354Z",
+  "lastUpdated": "2026-03-23T19:57:54.615Z",
   "stocks": {
     "SLV": {
-      "price": 63.025,
-      "change": 1.5049999999999955,
-      "changePercent": 2.4463589076722942,
+      "price": 62.56,
+      "change": 1.0399999999999991,
+      "changePercent": 1.6905071521456423,
       "prevClose": 61.52,
       "high": null,
       "low": null,
@@ -18,9 +18,9 @@
       "postMarketChangePct": null
     },
     "PPLT": {
-      "price": 169.985,
-      "change": -4.264999999999986,
-      "changePercent": -2.447632711621226,
+      "price": 169.66,
+      "change": -4.590000000000003,
+      "changePercent": -2.6341463414634165,
       "prevClose": 174.25,
       "high": null,
       "low": null,
@@ -146,9 +146,9 @@
       "postMarketChangePct": null
     },
     "TSLA": {
-      "price": 379.81,
-      "change": 11.850000000000023,
-      "changePercent": 3.220458745515823,
+      "price": 381.15,
+      "change": 13.189999999999998,
+      "changePercent": 3.584628763996086,
       "prevClose": 367.96,
       "high": null,
       "low": null,
@@ -194,20 +194,20 @@
       "postMarketChangePct": null
     },
     "BTC-USD": {
-      "price": 70991,
-      "change": 2290.3042937381224,
-      "changePercent": 3.3337425046328426,
-      "prevClose": 68700.69570626187,
+      "price": 70680,
+      "change": 2498.9857423584567,
+      "changePercent": 3.6652223050178185,
+      "prevClose": 68181.01425764154,
       "high": null,
       "low": null,
       "currency": "USD",
       "marketState": "REGULAR"
     },
     "SOL-USD": {
-      "price": 90.53,
-      "change": 3.2032834165126642,
-      "changePercent": 3.6681596902251727,
-      "prevClose": 87.32671658348734,
+      "price": 91.42,
+      "change": 4.5621061115486174,
+      "changePercent": 5.252379383510696,
+      "prevClose": 86.85789388845139,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -215,9 +215,9 @@
     },
     "XRP-USD": {
       "price": 1.44,
-      "change": 0.047120078200142926,
-      "changePercent": 3.3829246486125752,
-      "prevClose": 1.392879921799857,
+      "change": 0.051031122032744375,
+      "changePercent": 3.674029191167192,
+      "prevClose": 1.3889688779672555,
       "high": null,
       "low": null,
       "currency": "USD",

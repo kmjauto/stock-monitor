@@ -210,7 +210,7 @@
           <span class="text-xs px-2 py-0.5 rounded shrink-0 ${mClass}">${mLabel}</span>
         </div>
         <div class="text-2xl font-bold text-white mb-0.5 tracking-tight leading-tight">
-          ${fmtPrice(p, currency)}${renderExtendedInline(d, currency)}
+          ${fmtPrice(p, currency)}${renderExtendedInline(d, currency)}${saved.samsungPrice ? ` <span class="text-gray-500 font-normal text-xl">/</span> <span class="text-blue-300 text-xl font-bold">${fmtPrice(saved.samsungPrice, currency)}</span><span class="text-[10px] font-normal text-blue-400 ml-1 align-middle">삼성증권</span>` : ''}
         </div>
         <div class="text-sm">${fmtChange(d?.change, d?.changePercent, currency)}</div>
         ${pnlHtml}

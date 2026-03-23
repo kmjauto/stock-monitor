@@ -5,6 +5,7 @@
       "name": "은 ETF (SLV)",
       "category": "원자재",
       "currency": "USD",
+      "boatsTicker": "BOATS:SLV",
       "alerts": { "buy1": 59, "buy2": 55, "sell1": 68 },
       "notes": "1차 추매 $59 / 2차 추매 $55 / 익절 $68"
     },
@@ -13,6 +14,7 @@
       "name": "플래티넘 ETF (PPLT)",
       "category": "원자재",
       "currency": "USD",
+      "boatsTicker": "BOATS:PPLT",
       "alerts": {},
       "notes": ""
     },

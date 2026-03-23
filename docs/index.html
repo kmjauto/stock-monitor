@@ -120,16 +120,33 @@
 
   function fmtCurrentPrice(d, currency) {
     if (!d) return '—';
-    const cur   = getCurrentPrice(d);
-    const base  = fmtPrice(cur, currency);
+    const cur  = getCurrentPrice(d);
+    const base = fmtPrice(cur, currency);
 
-    // 정규장 외 시간대면 정규장 종가도 함께 표시
+    // BOATS 가격 표시
+    let boatsHtml = '';
+    if (d.boatsPrice != null) {
+      const bFmt = fmtPrice(d.boatsPrice, currency);
+      const bSign = d.boatsChangePct != null
+        ? (d.boatsChangePct >= 0 ? '+' : '') + d.boatsChangePct.toFixed(2) + '%'
+        : null;
+      const bColor = d.boatsChangePct == null ? 'text-blue-300'
+        : d.boatsChangePct > 0 ? 'text-green-400'
+        : d.boatsChangePct < 0 ? 'text-red-400' : 'text-blue-300';
+      boatsHtml = `<span class="text-[11px] font-normal text-gray-500 mx-1">/</span>`
+        + `<span class="${bColor} text-[13px] font-semibold">${bFmt}</span>`
+        + `<span class="text-[10px] text-blue-400/70 ml-0.5">BOATS${bSign ? ` ${bSign}` : ''}</span>`;
+    }
+
+    // 정규장 외 시간대면 라벨 추가
+    let stateHtml = '';
     if ((d.marketState === 'POST' && d.postMarketPrice) ||
         (d.marketState === 'PRE'  && d.preMarketPrice)) {
       const label = d.marketState === 'POST' ? '애프터' : '프리';
-      return `${base}<span class="text-[11px] font-normal text-yellow-400 ml-1.5 align-middle">${label}</span>`;
+      stateHtml = `<span class="text-[11px] font-normal text-yellow-400 ml-1.5 align-middle">${label}</span>`;
     }
-    return base;
+
+    return base + stateHtml + boatsHtml;
   }
 
   function fmtCurrentChange(d, currency) {

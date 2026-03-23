@@ -88,6 +88,38 @@ async function fetchYahoo(tickers) {
   return results;
 }
 
+// ── Blue Ocean ATS (BOATS) 가격 조회 — TradingView scanner ───────────────────
+async function fetchBoats(boatsTickers) {
+  if (!boatsTickers.length) return {};
+  try {
+    const res = await fetch('https://scanner.tradingview.com/scan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Origin': 'https://www.tradingview.com',
+        'Referer': 'https://www.tradingview.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      },
+      body: JSON.stringify({
+        symbols: { tickers: boatsTickers },
+        columns: ['close', 'change', 'change_abs'],
+      }),
+    });
+    if (!res.ok) { console.error(`BOATS scanner ${res.status}`); return {}; }
+    const data = await res.json();
+    const results = {};
+    for (const item of (data.data || [])) {
+      const [close, changePct, changeAbs] = item.d;
+      if (close != null) results[item.s] = { price: close, changePct, changeAbs };
+    }
+    console.log(`BOATS 조회: ${Object.keys(results).length}/${boatsTickers.length}개`);
+    return results;
+  } catch (e) {
+    console.error('BOATS fetch 오류:', e.message);
+    return {};
+  }
+}
+
 // ── CoinGecko 크립토 조회 ────────────────────────────────────────────────────
 async function fetchCrypto(tickerList) {
   if (tickerList.length === 0) return {};
@@ -229,14 +261,26 @@ console.log(`\n[${new Date().toISOString()}] 가격 수집 시작`);
 // 티커 분류
 const cryptoTickers = allStocks.map(s => s.ticker).filter(t => CRYPTO_MAP[t]);
 const stockTickers  = allStocks.map(s => s.ticker).filter(t => !CRYPTO_MAP[t]);
+const boatsTickers  = allStocks.filter(s => s.boatsTicker).map(s => s.boatsTicker);
 
 // 병렬 조회
-const [stockPrices, cryptoPrices] = await Promise.all([
+const [stockPrices, cryptoPrices, boatsPrices] = await Promise.all([
   fetchYahoo(stockTickers),
   fetchCrypto(cryptoTickers),
+  fetchBoats(boatsTickers),
 ]);
 
 const allPrices = { ...stockPrices, ...cryptoPrices };
+
+// BOATS 가격 병합 (boatsTicker가 있는 종목에 boatsPrice 필드 추가)
+for (const stock of allStocks) {
+  if (!stock.boatsTicker) continue;
+  const boats = boatsPrices[stock.boatsTicker];
+  if (boats && allPrices[stock.ticker]) {
+    allPrices[stock.ticker].boatsPrice    = boats.price;
+    allPrices[stock.ticker].boatsChangePct = boats.changePct;
+  }
+}
 console.log(`조회 완료: ${Object.keys(allPrices).length} / ${allStocks.length}개`);
 
 // docs/data 디렉토리 보장

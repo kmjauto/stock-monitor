@@ -41,7 +41,7 @@ if (fs.existsSync(ALERT_LOG)) {
 
 // ── Yahoo Finance 개별 조회 (/v8/finance/chart — 인증 불필요) ──────────────
 async function fetchYahooOne(ticker) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d&includePrePost=true`;
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }

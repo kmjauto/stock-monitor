@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-23T04:05:54.677Z",
+  "lastUpdated": "2026-03-23T04:14:31.679Z",
   "stocks": {
     "SLV": {
       "price": 61.52,
@@ -30,9 +30,9 @@
       "preMarketTime": null
     },
     "139230.KS": {
-      "price": 15165,
-      "change": -970,
-      "changePercent": -6.0117756430120854,
+      "price": 15115,
+      "change": -1020,
+      "changePercent": -6.321660985435389,
       "prevClose": 16135,
       "high": 15760,
       "low": 15040,
@@ -44,9 +44,9 @@
       "preMarketTime": null
     },
     "000720.KS": {
-      "price": 154900,
-      "change": -9100,
-      "changePercent": -5.548780487804878,
+      "price": 154000,
+      "change": -10000,
+      "changePercent": -6.097560975609756,
       "prevClose": 164000,
       "high": 165600,
       "low": 153600,
@@ -58,9 +58,9 @@
       "preMarketTime": null
     },
     "028050.KS": {
-      "price": 36200,
-      "change": 900,
-      "changePercent": 2.5495750708215295,
+      "price": 35550,
+      "change": 250,
+      "changePercent": 0.708215297450425,
       "prevClose": 35300,
       "high": 40700,
       "low": 35500,
@@ -72,12 +72,12 @@
       "preMarketTime": null
     },
     "003490.KS": {
-      "price": 24550,
-      "change": -1800,
-      "changePercent": -6.83111954459203,
+      "price": 24450,
+      "change": -1900,
+      "changePercent": -7.2106261859582546,
       "prevClose": 26350,
       "high": 26050,
-      "low": 24500,
+      "low": 24400,
       "currency": "KRW",
       "marketState": "CLOSED",
       "postMarketPrice": null,
@@ -86,9 +86,9 @@
       "preMarketTime": null
     },
     "010120.KS": {
-      "price": 832000,
-      "change": -54000,
-      "changePercent": -6.094808126410835,
+      "price": 830000,
+      "change": -56000,
+      "changePercent": -6.320541760722348,
       "prevClose": 886000,
       "high": 865000,
       "low": 824000,
@@ -100,9 +100,9 @@
       "preMarketTime": null
     },
     "298040.KS": {
-      "price": 2626000,
-      "change": -109000,
-      "changePercent": -3.985374771480804,
+      "price": 2611000,
+      "change": -124000,
+      "changePercent": -4.53382084095064,
       "prevClose": 2735000,
       "high": 2660000,
       "low": 2550000,
@@ -114,9 +114,9 @@
       "preMarketTime": null
     },
     "034020.KS": {
-      "price": 102300,
-      "change": -7300,
-      "changePercent": -6.660583941605839,
+      "price": 101800,
+      "change": -7800,
+      "changePercent": -7.116788321167883,
       "prevClose": 109600,
       "high": 107200,
       "low": 100900,
@@ -142,9 +142,9 @@
       "preMarketTime": null
     },
     "005490.KS": {
-      "price": 328500,
-      "change": -15000,
-      "changePercent": -4.366812227074235,
+      "price": 328000,
+      "change": -15500,
+      "changePercent": -4.512372634643377,
       "prevClose": 343500,
       "high": 340000,
       "low": 326500,
@@ -156,9 +156,9 @@
       "preMarketTime": null
     },
     "454910.KS": {
-      "price": 84400,
-      "change": -4900,
-      "changePercent": -5.487122060470324,
+      "price": 84200,
+      "change": -5100,
+      "changePercent": -5.711086226203808,
       "prevClose": 89300,
       "high": 86800,
       "low": 82700,
@@ -170,20 +170,20 @@
       "preMarketTime": null
     },
     "BTC-USD": {
-      "price": 68101,
-      "change": -1327.7275849685,
-      "changePercent": -1.9123605331000715,
-      "prevClose": 69428.7275849685,
+      "price": 68161,
+      "change": -1236.6548368845463,
+      "changePercent": -1.7819836128342332,
+      "prevClose": 69397.65483688454,
       "high": null,
       "low": null,
       "currency": "USD",
       "marketState": "REGULAR"
     },
     "SOL-USD": {
-      "price": 86.42,
-      "change": -2.4309808432630846,
-      "changePercent": -2.736020266958491,
-      "prevClose": 88.85098084326309,
+      "price": 86.46,
+      "change": -2.4328337726248117,
+      "changePercent": -2.7368165344437703,
+      "prevClose": 88.89283377262481,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -191,9 +191,9 @@
     },
     "XRP-USD": {
       "price": 1.38,
-      "change": -0.03674239189684444,
-      "changePercent": -2.593441976960319,
-      "prevClose": 1.4167423918968443,
+      "change": -0.0357632039496371,
+      "changePercent": -2.5260724286283476,
+      "prevClose": 1.415763203949637,
       "high": null,
       "low": null,
       "currency": "USD",

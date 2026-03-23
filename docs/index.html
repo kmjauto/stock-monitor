@@ -110,6 +110,35 @@
       : '$' + price.toFixed(2);
   }
 
+  function renderExtendedHours(d, currency) {
+    if (!d) return '';
+    const extPrice = d.postMarketPrice ?? d.preMarketPrice ?? null;
+    const extTime  = d.postMarketTime  ?? d.preMarketTime  ?? null;
+    const isPost   = !!d.postMarketPrice;
+    if (extPrice == null || d?.price == null) return '';
+
+    const diff    = extPrice - d.price;
+    const diffPct = (diff / d.price) * 100;
+    const cls     = diff > 0 ? 'text-green-400' : diff < 0 ? 'text-red-400' : 'text-gray-400';
+    const arrow   = diff > 0 ? '▲' : diff < 0 ? '▼' : '─';
+    const sign    = diff >= 0 ? '+' : '';
+    const label   = isPost ? '애프터' : '프리';
+
+    let timeStr = '';
+    if (extTime) {
+      const d2 = new Date(extTime * 1000);
+      timeStr  = d2.toLocaleTimeString('ko-KR', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' }) + ' ET';
+    }
+
+    return `
+      <div class="mt-1.5 flex items-center gap-1.5 text-xs text-gray-400 flex-wrap">
+        <span class="bg-yellow-900/40 text-yellow-400 border border-yellow-800/50 px-1.5 py-0.5 rounded text-[10px] font-medium">${label}</span>
+        <span class="text-gray-200 font-semibold">${fmtPrice(extPrice, currency)}</span>
+        <span class="${cls}">${arrow} ${sign}${Math.abs(diff).toFixed(2)} (${sign}${diffPct.toFixed(2)}%)</span>
+        ${timeStr ? `<span class="text-gray-600">${timeStr}</span>` : ''}
+      </div>`;
+  }
+
   function fmtChange(change, pct, currency) {
     if (change == null || pct == null) return '<span class="text-gray-500">—</span>';
     const cls   = change > 0 ? 'text-green-400' : change < 0 ? 'text-red-400' : 'text-gray-400';
@@ -196,6 +225,7 @@
         </div>
         <div class="text-2xl font-bold text-white mb-0.5 tracking-tight">${fmtPrice(p, currency)}</div>
         <div class="text-sm">${fmtChange(d?.change, d?.changePercent, currency)}</div>
+        ${renderExtendedHours(d, currency)}
         ${pnlHtml}
         ${tags.length ? `<div class="mt-2 flex flex-wrap gap-1">${tags.join('')}</div>` : ''}
         ${stock.notes ? `<div class="mt-2 text-xs text-gray-500 leading-relaxed">📌 ${stock.notes}</div>` : ''}

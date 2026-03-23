@@ -68,6 +68,10 @@ async function fetchYahooOne(ticker) {
       low:           meta.regularMarketDayLow  ?? null,
       currency:      meta.currency             ?? null,
       marketState:   mState,
+      postMarketPrice: meta.postMarketPrice ?? null,
+      postMarketTime:  meta.postMarketTime  ?? null,
+      preMarketPrice:  meta.preMarketPrice  ?? null,
+      preMarketTime:   meta.preMarketTime   ?? null,
     };
   } catch (e) {
     console.error(`Yahoo fetch 오류 [${ticker}]:`, e.message);

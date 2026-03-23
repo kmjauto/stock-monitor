@@ -39,39 +39,34 @@ if (fs.existsSync(ALERT_LOG)) {
   catch { alertHistory = {}; }
 }
 
-// ── Yahoo Finance 개별 조회 (/v8/finance/chart — 인증 불필요) ──────────────
+// ── Yahoo Finance 개별 조회 (v7/quote — 애프터마켓 포함) ──────────────────
 async function fetchYahooOne(ticker) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d&includePrePost=true`;
+  const fields = 'regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketPreviousClose,regularMarketDayHigh,regularMarketDayLow,postMarketPrice,postMarketChange,postMarketChangePercent,preMarketPrice,preMarketChange,preMarketChangePercent,currency,marketState';
+  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(ticker)}&fields=${fields}`;
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
     });
     if (!res.ok) { console.error(`Yahoo ${res.status}: ${ticker}`); return null; }
     const data = await res.json();
-    const meta = data?.chart?.result?.[0]?.meta;
-    if (!meta) return null;
-
-    const price    = meta.regularMarketPrice ?? null;
-    const prev     = meta.chartPreviousClose ?? meta.previousClose ?? meta.regularMarketPreviousClose ?? null;
-    const change   = (price != null && prev != null) ? price - prev : null;
-    const changePct = (change != null && prev) ? (change / prev) * 100 : null;
-
-    // 마켓 상태 판별
-    const mState = meta.marketState ?? (meta.postMarketPrice ? 'POST' : 'CLOSED');
+    const q = data?.quoteResponse?.result?.[0];
+    if (!q) return null;
 
     return {
-      price,
-      change,
-      changePercent: changePct,
-      prevClose:     prev,
-      high:          meta.regularMarketDayHigh ?? null,
-      low:           meta.regularMarketDayLow  ?? null,
-      currency:      meta.currency             ?? null,
-      marketState:   mState,
-      postMarketPrice: meta.postMarketPrice ?? null,
-      postMarketTime:  meta.postMarketTime  ?? null,
-      preMarketPrice:  meta.preMarketPrice  ?? null,
-      preMarketTime:   meta.preMarketTime   ?? null,
+      price:            q.regularMarketPrice           ?? null,
+      change:           q.regularMarketChange          ?? null,
+      changePercent:    q.regularMarketChangePercent   ?? null,
+      prevClose:        q.regularMarketPreviousClose   ?? null,
+      high:             q.regularMarketDayHigh         ?? null,
+      low:              q.regularMarketDayLow          ?? null,
+      currency:         q.currency                     ?? null,
+      marketState:      q.marketState                  ?? 'CLOSED',
+      postMarketPrice:  q.postMarketPrice              ?? null,
+      postMarketChange: q.postMarketChange             ?? null,
+      postMarketChangePct: q.postMarketChangePercent   ?? null,
+      preMarketPrice:   q.preMarketPrice               ?? null,
+      preMarketChange:  q.preMarketChange              ?? null,
+      preMarketChangePct: q.preMarketChangePercent     ?? null,
     };
   } catch (e) {
     console.error(`Yahoo fetch 오류 [${ticker}]:`, e.message);

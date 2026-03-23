@@ -224,7 +224,10 @@ async function checkAlerts(prices) {
     const d = prices[stock.ticker];
     if (!d?.price || !stock.alerts) continue;
 
-    const p    = d.price;
+    // 현재 거래 중인 가격 우선 사용 (프리/애프터마켓 포함)
+    const p = (d.marketState === 'PRE'  && d.preMarketPrice  != null) ? d.preMarketPrice
+            : (d.marketState === 'POST' && d.postMarketPrice != null) ? d.postMarketPrice
+            : d.price;
     const name = stock.name;
     const pFmt = stock.currency === 'KRW'
       ? p.toLocaleString('ko-KR') + '원'

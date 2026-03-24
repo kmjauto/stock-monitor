@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T21:58:36.123Z",
+  "lastUpdated": "2026-03-24T23:03:25.638Z",
   "macros": {
     "^VIX": {
       "name": "VIX",
@@ -144,9 +144,9 @@
     "CL=F": {
       "name": "WTI",
       "label": "WTI 원유",
-      "price": 88.39,
-      "change": -3.9599999999999937,
-      "changePercent": -4.28803465078505,
+      "price": 88.79,
+      "change": -3.559999999999988,
+      "changePercent": -3.8548998375744326,
       "prevClose": 92.35,
       "high": null,
       "low": null,
@@ -277,16 +277,16 @@
         },
         {
           "date": "2026-03-24",
-          "close": 88.39
+          "close": 88.79
         }
       ]
     },
     "GC=F": {
       "name": "Gold",
       "label": "금",
-      "price": 4474.9,
-      "change": 72.89999999999964,
-      "changePercent": 1.6560654248068976,
+      "price": 4475.6,
+      "change": 73.60000000000036,
+      "changePercent": 1.6719672875965552,
       "prevClose": 4402,
       "high": null,
       "low": null,
@@ -417,7 +417,7 @@
         },
         {
           "date": "2026-03-24",
-          "close": 4474.9
+          "close": 4475.6
         }
       ]
     },
@@ -564,9 +564,9 @@
     "USDKRW=X": {
       "name": "USD/KRW",
       "label": "원달러",
-      "price": 1499.04,
-      "change": 12.740000000000009,
-      "changePercent": 0.8571620803337152,
+      "price": 1498.34,
+      "change": 12.039999999999964,
+      "changePercent": 0.8100652627329585,
       "prevClose": 1486.3,
       "high": null,
       "low": null,
@@ -697,7 +697,7 @@
         },
         {
           "date": "2026-03-24",
-          "close": 1499.04
+          "close": 1498.34
         }
       ]
     },
@@ -715,9 +715,9 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 79.17,
-      "postMarketChange": -0.269999999999996,
-      "postMarketChangePct": -0.33987915407854485,
+      "postMarketPrice": 79.18,
+      "postMarketChange": -0.2599999999999909,
+      "postMarketChangePct": -0.3272910372608144,
       "history": [
         {
           "date": "2026-02-10",

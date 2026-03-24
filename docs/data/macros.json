@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-03-24T11:12:11.096Z",
+  "lastUpdated": "2026-03-24T14:44:54.448Z",
   "macros": {
     "^VIX": {
       "name": "VIX",
       "label": "공포지수",
-      "price": 26.44,
-      "change": 0.2900000000000027,
-      "changePercent": 1.1089866156787866,
+      "price": 26.8,
+      "change": 0.6500000000000021,
+      "changePercent": 2.4856596558317485,
       "prevClose": 26.15,
       "high": null,
       "low": null,
@@ -137,16 +137,16 @@
         },
         {
           "date": "2026-03-24",
-          "close": 26.440000534057617
+          "close": 26.8
         }
       ]
     },
     "CL=F": {
       "name": "WTI",
       "label": "WTI 원유",
-      "price": 90.46,
-      "change": 2.3299999999999983,
-      "changePercent": 2.6438216271417203,
+      "price": 91.71,
+      "change": 3.5799999999999983,
+      "changePercent": 4.062180869170541,
       "prevClose": 88.13,
       "high": null,
       "low": null,
@@ -277,16 +277,16 @@
         },
         {
           "date": "2026-03-24",
-          "close": 90.44000244140625
+          "close": 91.71
         }
       ]
     },
     "GC=F": {
       "name": "Gold",
       "label": "금",
-      "price": 4399.9,
-      "change": -7.400000000000546,
-      "changePercent": -0.16790325142378656,
+      "price": 4415.6,
+      "change": 8.300000000000182,
+      "changePercent": 0.18832391713748056,
       "prevClose": 4407.3,
       "high": null,
       "low": null,
@@ -417,21 +417,21 @@
         },
         {
           "date": "2026-03-24",
-          "close": 4401.89990234375
+          "close": 4415.6
         }
       ]
     },
     "^TNX": {
       "name": "US10Y",
       "label": "미국 10년물",
-      "price": 4.334,
-      "change": -0.057000000000000384,
-      "changePercent": -1.2981097699840671,
-      "prevClose": 4.391,
+      "price": 4.384,
+      "change": 0.05000000000000071,
+      "changePercent": 1.153668666359038,
+      "prevClose": 4.334,
       "high": null,
       "low": null,
       "currency": "USD",
-      "marketState": "CLOSED",
+      "marketState": "REGULAR",
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
@@ -439,10 +439,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-09",
-          "close": 4.197999954223633
-        },
         {
           "date": "2026-02-10",
           "close": 4.146999835968018
@@ -558,15 +554,19 @@
         {
           "date": "2026-03-23",
           "close": 4.334000110626221
+        },
+        {
+          "date": "2026-03-24",
+          "close": 4.384
         }
       ]
     },
     "USDKRW=X": {
       "name": "USD/KRW",
       "label": "원달러",
-      "price": 1494.86,
-      "change": 8.559999999999945,
-      "changePercent": 0.5759267980892112,
+      "price": 1496.58,
+      "change": 10.279999999999973,
+      "changePercent": 0.6916504070510646,
       "prevClose": 1486.3,
       "high": null,
       "low": null,
@@ -697,32 +697,28 @@
         },
         {
           "date": "2026-03-24",
-          "close": 1494.8599853515625
+          "close": 1496.58
         }
       ]
     },
     "HYG": {
       "name": "HYG",
       "label": "하이일드 ETF",
-      "price": 79.44,
-      "change": 0.519999999999996,
-      "changePercent": 0.6588950836289863,
-      "prevClose": 78.92,
+      "price": 79.245,
+      "change": -0.19499999999999318,
+      "changePercent": -0.24546827794561074,
+      "prevClose": 79.44,
       "high": null,
       "low": null,
       "currency": "USD",
-      "marketState": "PRE",
-      "preMarketPrice": 79.42,
-      "preMarketChange": 0.5,
-      "preMarketChangePct": 0.6335529650278764,
+      "marketState": "REGULAR",
+      "preMarketPrice": null,
+      "preMarketChange": null,
+      "preMarketChangePct": null,
       "postMarketPrice": null,
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-09",
-          "close": 80.91999816894531
-        },
         {
           "date": "2026-02-10",
           "close": 80.83999633789062
@@ -838,6 +834,10 @@
         {
           "date": "2026-03-23",
           "close": 79.44000244140625
+        },
+        {
+          "date": "2026-03-24",
+          "close": 79.245
         }
       ]
     }

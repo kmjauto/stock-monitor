@@ -1,17 +1,17 @@
 {
-  "lastUpdated": "2026-03-24T20:02:28.960Z",
+  "lastUpdated": "2026-03-24T21:58:36.123Z",
   "macros": {
     "^VIX": {
       "name": "VIX",
       "label": "공포지수",
-      "price": 26.83,
-      "change": 0.6799999999999997,
-      "changePercent": 2.6003824091778194,
+      "price": 26.95,
+      "change": 0.8000000000000007,
+      "changePercent": 3.0592734225621445,
       "prevClose": 26.15,
       "high": null,
       "low": null,
       "currency": "USD",
-      "marketState": "REGULAR",
+      "marketState": "CLOSED",
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
@@ -137,17 +137,17 @@
         },
         {
           "date": "2026-03-24",
-          "close": 26.83
+          "close": 26.95
         }
       ]
     },
     "CL=F": {
       "name": "WTI",
       "label": "WTI 원유",
-      "price": 91.65,
-      "change": 3.5200000000000102,
-      "changePercent": 3.994099625553172,
-      "prevClose": 88.13,
+      "price": 88.39,
+      "change": -3.9599999999999937,
+      "changePercent": -4.28803465078505,
+      "prevClose": 92.35,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -277,17 +277,17 @@
         },
         {
           "date": "2026-03-24",
-          "close": 91.65
+          "close": 88.39
         }
       ]
     },
     "GC=F": {
       "name": "Gold",
       "label": "금",
-      "price": 4399.2,
-      "change": -8.100000000000364,
-      "changePercent": -0.18378599142332866,
-      "prevClose": 4407.3,
+      "price": 4474.9,
+      "change": 72.89999999999964,
+      "changePercent": 1.6560654248068976,
+      "prevClose": 4402,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -417,7 +417,7 @@
         },
         {
           "date": "2026-03-24",
-          "close": 4399.2
+          "close": 4474.9
         }
       ]
     },
@@ -564,9 +564,9 @@
     "USDKRW=X": {
       "name": "USD/KRW",
       "label": "원달러",
-      "price": 1499.28,
-      "change": 12.980000000000018,
-      "changePercent": 0.8733095606539741,
+      "price": 1499.04,
+      "change": 12.740000000000009,
+      "changePercent": 0.8571620803337152,
       "prevClose": 1486.3,
       "high": null,
       "low": null,
@@ -697,16 +697,16 @@
         },
         {
           "date": "2026-03-24",
-          "close": 1499.28
+          "close": 1499.04
         }
       ]
     },
     "HYG": {
       "name": "HYG",
       "label": "하이일드 ETF",
-      "price": 79.175,
-      "change": -0.26500000000000057,
-      "changePercent": -0.3335850956696885,
+      "price": 79.17,
+      "change": -0.269999999999996,
+      "changePercent": -0.33987915407854485,
       "prevClose": 79.44,
       "high": null,
       "low": null,
@@ -715,9 +715,9 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 79.17500305175781,
-      "postMarketChange": -0.2649969482421852,
-      "postMarketChangePct": -0.3335812540813006,
+      "postMarketPrice": 79.17,
+      "postMarketChange": -0.269999999999996,
+      "postMarketChangePct": -0.33987915407854485,
       "history": [
         {
           "date": "2026-02-10",
@@ -837,7 +837,7 @@
         },
         {
           "date": "2026-03-24",
-          "close": 79.175
+          "close": 79.17
         }
       ]
     }

@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-24T20:02:28.907Z",
+  "lastUpdated": "2026-03-24T21:58:35.122Z",
   "stocks": {
     "SLV": {
-      "price": 62.98,
-      "change": 0.509999999999998,
-      "changePercent": 0.8163918680966833,
+      "price": 62.95,
+      "change": 0.480000000000004,
+      "changePercent": 0.7683688170321819,
       "prevClose": 62.47,
       "high": null,
       "low": null,
@@ -13,14 +13,14 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 63.0205,
-      "postMarketChange": 0.5504999999999995,
-      "postMarketChangePct": 0.8812229870337754
+      "postMarketPrice": 64.48,
+      "postMarketChange": 2.010000000000005,
+      "postMarketChangePct": 3.217544421322243
     },
     "PPLT": {
-      "price": 171.845,
-      "change": 1.7249999999999943,
-      "changePercent": 1.0139901246179135,
+      "price": 171.69,
+      "change": 1.5699999999999932,
+      "changePercent": 0.9228779684928246,
       "prevClose": 170.12,
       "high": null,
       "low": null,
@@ -29,9 +29,9 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 171.5399932861328,
-      "postMarketChange": 1.419993286132808,
-      "postMarketChangePct": 0.8347009676303832
+      "postMarketPrice": 174.65,
+      "postMarketChange": 4.530000000000001,
+      "postMarketChangePct": 2.662826240300965
     },
     "139230.KS": {
       "price": 15230,
@@ -157,9 +157,9 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 383.213,
-      "postMarketChange": 2.3629999999999995,
-      "postMarketChangePct": 0.6204542470789023
+      "postMarketPrice": 385.8657,
+      "postMarketChange": 5.015699999999981,
+      "postMarketChangePct": 1.3169751870815232
     },
     "005490.KS": {
       "price": 339500,
@@ -194,14 +194,14 @@
       "postMarketChangePct": null
     },
     "^VIX": {
-      "price": 26.83,
-      "change": 0.6799999999999997,
-      "changePercent": 2.6003824091778194,
+      "price": 26.95,
+      "change": 0.8000000000000007,
+      "changePercent": 3.0592734225621445,
       "prevClose": 26.15,
       "high": null,
       "low": null,
       "currency": "USD",
-      "marketState": "REGULAR",
+      "marketState": "CLOSED",
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
@@ -210,10 +210,10 @@
       "postMarketChangePct": null
     },
     "CL=F": {
-      "price": 91.65,
-      "change": 3.5200000000000102,
-      "changePercent": 3.994099625553172,
-      "prevClose": 88.13,
+      "price": 88.39,
+      "change": -3.9599999999999937,
+      "changePercent": -4.28803465078505,
+      "prevClose": 92.35,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -226,10 +226,10 @@
       "postMarketChangePct": null
     },
     "GC=F": {
-      "price": 4399.2,
-      "change": -8.100000000000364,
-      "changePercent": -0.18378599142332866,
-      "prevClose": 4407.3,
+      "price": 4474.9,
+      "change": 72.89999999999964,
+      "changePercent": 1.6560654248068976,
+      "prevClose": 4402,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -258,9 +258,9 @@
       "postMarketChangePct": null
     },
     "USDKRW=X": {
-      "price": 1499.28,
-      "change": 12.980000000000018,
-      "changePercent": 0.8733095606539741,
+      "price": 1499.04,
+      "change": 12.740000000000009,
+      "changePercent": 0.8571620803337152,
       "prevClose": 1486.3,
       "high": null,
       "low": null,
@@ -274,9 +274,9 @@
       "postMarketChangePct": null
     },
     "HYG": {
-      "price": 79.175,
-      "change": -0.26500000000000057,
-      "changePercent": -0.3335850956696885,
+      "price": 79.17,
+      "change": -0.269999999999996,
+      "changePercent": -0.33987915407854485,
       "prevClose": 79.44,
       "high": null,
       "low": null,
@@ -285,35 +285,35 @@
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 79.17500305175781,
-      "postMarketChange": -0.2649969482421852,
-      "postMarketChangePct": -0.3335812540813006
+      "postMarketPrice": 79.17,
+      "postMarketChange": -0.269999999999996,
+      "postMarketChangePct": -0.33987915407854485
     },
     "BTC-USD": {
-      "price": 69343,
-      "change": -1281.9957585180248,
-      "changePercent": -1.815215342315124,
-      "prevClose": 70624.99575851802,
+      "price": 70205,
+      "change": -666.2476752548903,
+      "changePercent": -0.9400817639161085,
+      "prevClose": 70871.2476752549,
       "high": null,
       "low": null,
       "currency": "USD",
       "marketState": "REGULAR"
     },
     "SOL-USD": {
-      "price": 88.53,
-      "change": -2.835420354394678,
-      "changePercent": -3.103384566498406,
-      "prevClose": 91.36542035439467,
+      "price": 90.26,
+      "change": -1.4336581549191334,
+      "changePercent": -1.5635303288880957,
+      "prevClose": 91.69365815491913,
       "high": null,
       "low": null,
       "currency": "USD",
       "marketState": "REGULAR"
     },
     "XRP-USD": {
-      "price": 1.39,
-      "change": -0.0446651231807671,
-      "changePercent": -3.11327866406489,
-      "prevClose": 1.434665123180767,
+      "price": 1.41,
+      "change": -0.026324381638434695,
+      "changePercent": -1.832760202009947,
+      "prevClose": 1.4363243816384346,
       "high": null,
       "low": null,
       "currency": "USD",

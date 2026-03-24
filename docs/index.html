@@ -5,384 +5,581 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>📊 투자 모니터</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          animation: { 'pulse-slow': 'pulse 2s cubic-bezier(0.4,0,0.6,1) infinite' }
-        }
-      }
+      theme: { extend: { animation: { 'pulse-slow': 'pulse 2s cubic-bezier(0.4,0,0.6,1) infinite' } } }
     }
   </script>
   <style>
     body { background-color: #0a0f1a; }
     .card-alert-buy  { border-color: #22c55e !important; box-shadow: 0 0 12px rgba(34,197,94,0.2); }
     .card-alert-sell { border-color: #ef4444 !important; box-shadow: 0 0 12px rgba(239,68,68,0.2); }
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .tab-btn { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; transition: all .15s; color: #9ca3af; }
+    .tab-btn.active { background: #1e3a5f; color: #60a5fa; }
+    .tab-btn:hover:not(.active) { background: #1f2937; color: #d1d5db; }
+    .macro-canvas-wrap { position: relative; height: 44px; }
+    .fg-bar { height: 10px; border-radius: 5px;
+      background: linear-gradient(to right, #dc2626 0%, #f97316 25%, #eab308 50%, #22c55e 75%, #16a34a 100%); }
   </style>
 </head>
 <body class="text-gray-100 min-h-screen">
 
-  <!-- ── 헤더 ─────────────────────────────────────────── -->
-  <header class="bg-gray-900/80 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
-      <div class="flex items-center gap-3">
-        <h1 class="text-base font-bold tracking-tight">📊 투자 모니터</h1>
-        <span class="hidden sm:inline text-xs text-yellow-500 bg-yellow-900/30 border border-yellow-800 px-2 py-0.5 rounded-full">
-          ⚠️ ~20분 지연
-        </span>
+<!-- ── 헤더 ──────────────────────────────────────────────────────────────── -->
+<header class="bg-gray-900/80 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+    <div class="flex items-center gap-3">
+      <h1 class="text-base font-bold tracking-tight">📊 투자 모니터</h1>
+      <span class="hidden sm:inline text-xs text-yellow-500 bg-yellow-900/30 border border-yellow-800 px-2 py-0.5 rounded-full">⚠️ ~20분 지연</span>
+    </div>
+    <div class="flex items-center gap-2 text-xs">
+      <span id="last-updated" class="text-gray-500">--</span>
+      <button onclick="loadData()" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 px-3 py-1.5 rounded-lg transition-colors">🔄 새로고침</button>
+      <button onclick="openSettings()" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 px-3 py-1.5 rounded-lg transition-colors">⚙️ 평단 설정</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── 탭 바 ──────────────────────────────────────────────────────────────── -->
+<nav class="sticky top-[52px] z-40 bg-gray-900/90 backdrop-blur border-b border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 flex gap-1 py-2">
+    <button onclick="setTab('overview')" id="tab-overview" class="tab-btn active">🌐 종합</button>
+    <button onclick="setTab('holdings')" id="tab-holdings" class="tab-btn">💼 보유</button>
+    <button onclick="setTab('watchlist')" id="tab-watchlist" class="tab-btn">🔎 관심</button>
+  </div>
+</nav>
+
+<!-- ── 메인 ──────────────────────────────────────────────────────────────── -->
+<main class="max-w-7xl mx-auto px-4 py-6">
+
+  <!-- ── 종합 탭 ─────────────────────────────────────────────────────────── -->
+  <div id="pane-overview">
+
+    <!-- Fear & Greed + 상단 요약 -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+      <!-- Fear & Greed -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+        <div class="text-xs text-gray-500 mb-2">😱 Fear &amp; Greed Index (크립토)</div>
+        <div id="fg-value" class="text-3xl font-bold mb-1">--</div>
+        <div id="fg-label" class="text-sm text-gray-400 mb-3">--</div>
+        <div class="relative">
+          <div class="fg-bar w-full"></div>
+          <div id="fg-needle" class="absolute top-1/2 -translate-y-1/2 w-2 h-5 bg-white rounded-full shadow-lg transition-all duration-500" style="left:50%"></div>
+        </div>
+        <div class="flex justify-between text-[10px] text-gray-600 mt-1">
+          <span>공포</span><span>중립</span><span>탐욕</span>
+        </div>
       </div>
-      <div class="flex items-center gap-2 text-xs">
-        <span id="last-updated" class="text-gray-500">--</span>
-        <button onclick="loadData()"
-          class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 px-3 py-1.5 rounded-lg transition-colors">
-          🔄 새로고침
-        </button>
-        <button onclick="openSettings()"
-          class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 px-3 py-1.5 rounded-lg transition-colors">
-          ⚙️ 평단 설정
-        </button>
+
+      <!-- 보유 수익률 상위 -->
+      <div class="sm:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-4">
+        <div class="text-xs text-gray-500 mb-3">🏆 보유 종목 수익률 순위</div>
+        <div id="top-performers" class="space-y-2">
+          <div class="text-sm text-gray-600">평단가 설정 후 표시됩니다.</div>
+        </div>
       </div>
     </div>
-  </header>
 
-  <!-- ── 메인 ─────────────────────────────────────────── -->
-  <main class="max-w-7xl mx-auto px-4 py-6 space-y-8" id="main-content">
-    <div class="flex items-center justify-center h-40 text-gray-500 text-sm">
-      데이터 로딩 중...
-    </div>
-  </main>
+    <!-- 매크로 지표 -->
+    <section class="mb-6">
+      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">🌍 매크로 지표</h2>
+      <div id="macro-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="col-span-full text-sm text-gray-600 py-4 text-center">로딩 중...</div>
+      </div>
+    </section>
 
-  <!-- ── 평단 설정 모달 ────────────────────────────────── -->
-  <div id="settings-modal"
-       class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4"
-       onclick="if(event.target===this) closeSettings()">
-    <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col">
-      <div class="flex items-center justify-between px-5 py-4 border-b border-gray-700 shrink-0">
-        <h2 class="font-bold text-base">⚙️ 보유 평단가 설정</h2>
-        <button onclick="closeSettings()" class="text-gray-400 hover:text-white text-xl leading-none">✕</button>
-      </div>
-      <div class="overflow-y-auto flex-1 px-5 py-4 space-y-5">
-        <p class="text-xs text-blue-300 bg-blue-900/20 border border-blue-800/60 rounded-lg px-3 py-2.5 leading-relaxed">
-          🔒 평단가·수량은 이 기기에만 저장됩니다.<br>GitHub에 올라가지 않습니다.
-        </p>
-        <div id="settings-fields" class="space-y-5"></div>
-      </div>
-      <div class="flex gap-3 justify-end px-5 py-4 border-t border-gray-700 shrink-0">
-        <button onclick="saveSettings()"
-          class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors">
-          저장
-        </button>
-        <button onclick="closeSettings()"
-          class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors">
-          취소
-        </button>
-      </div>
+    <!-- 보유 알림 종목 -->
+    <section id="alert-section" class="hidden mb-6">
+      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">🔔 알림 발생 종목</h2>
+      <div id="alert-cards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+    </section>
+
+  </div><!-- /pane-overview -->
+
+  <!-- ── 보유 탭 ─────────────────────────────────────────────────────────── -->
+  <div id="pane-holdings" class="hidden">
+    <div id="holdings-content">
+      <div class="text-sm text-gray-600">데이터 로딩 중...</div>
     </div>
   </div>
 
-  <script>
-  // ── 상태 ──────────────────────────────────────────────────────────────────
-  let pricesData   = {};
-  let watchlistCfg = { holdings: [], watchlist: [] };
-  let localSettings = {};
+  <!-- ── 관심 탭 ─────────────────────────────────────────────────────────── -->
+  <div id="pane-watchlist" class="hidden">
+    <div id="watchlist-content">
+      <div class="text-sm text-gray-600">데이터 로딩 중...</div>
+    </div>
+  </div>
 
-  const CATEGORY_META = {
-    '원자재':   { icon: '🪙', label: '보유 — 원자재' },
-    '이란전쟁': { icon: '⚡', label: '주시 — 이란전쟁 급등' },
-    '금리인하': { icon: '📉', label: '주시 — 금리인하 진입' },
-    '기타':     { icon: '🔎', label: '주시 — 그 외' },
-    '크립토':   { icon: '₿',  label: '주시 — 크립토' },
-  };
+</main>
 
-  const MARKET_BADGE = {
-    REGULAR: ['정규장', 'bg-green-900/50 text-green-400 border border-green-800/50'],
-    POST:    ['애프터', 'bg-yellow-900/50 text-yellow-400 border border-yellow-800/50'],
-    PRE:     ['프리장', 'bg-yellow-900/50 text-yellow-400 border border-yellow-800/50'],
-    CLOSED:  ['휴장',   'bg-gray-800 text-gray-500 border border-gray-700'],
-  };
+<!-- ── 평단 설정 모달 ──────────────────────────────────────────────────────── -->
+<div id="settings-modal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4"
+     onclick="if(event.target===this) closeSettings()">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-700 shrink-0">
+      <h2 class="font-bold text-base">⚙️ 보유 평단가 설정</h2>
+      <button onclick="closeSettings()" class="text-gray-400 hover:text-white text-xl leading-none">✕</button>
+    </div>
+    <div class="overflow-y-auto flex-1 px-5 py-4 space-y-5">
+      <p class="text-xs text-blue-300 bg-blue-900/20 border border-blue-800/60 rounded-lg px-3 py-2.5 leading-relaxed">
+        🔒 평단가·수량은 이 기기에만 저장됩니다. GitHub에 올라가지 않습니다.
+      </p>
+      <div id="settings-fields" class="space-y-5"></div>
+    </div>
+    <div class="flex gap-3 justify-end px-5 py-4 border-t border-gray-700 shrink-0">
+      <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors">저장</button>
+      <button onclick="closeSettings()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors">취소</button>
+    </div>
+  </div>
+</div>
 
-  // ── 포맷 헬퍼 ────────────────────────────────────────────────────────────
-  function fmtPrice(price, currency) {
-    if (price == null) return '—';
-    return currency === 'KRW'
-      ? price.toLocaleString('ko-KR') + '원'
-      : '$' + price.toFixed(2);
+<script>
+// ── 상태 ────────────────────────────────────────────────────────────────────
+let pricesData   = {};
+let watchlistCfg = { holdings: [], watchlist: [], macros: [] };
+let macrosData   = {};
+let localSettings = {};
+let activeTab    = 'overview';
+let chartInstances = {};
+
+const CATEGORY_META = {
+  '원자재':   { icon: '🪙', label: '보유 — 원자재' },
+  '이란전쟁': { icon: '⚡', label: '주시 — 이란전쟁 급등' },
+  '금리인하': { icon: '📉', label: '주시 — 금리인하 진입' },
+  '기타':     { icon: '🔎', label: '주시 — 그 외' },
+  '크립토':   { icon: '₿',  label: '주시 — 크립토' },
+};
+
+const MARKET_BADGE = {
+  REGULAR: ['정규장', 'bg-green-900/50 text-green-400 border border-green-800/50'],
+  POST:    ['애프터', 'bg-yellow-900/50 text-yellow-400 border border-yellow-800/50'],
+  PRE:     ['프리장', 'bg-yellow-900/50 text-yellow-400 border border-yellow-800/50'],
+  CLOSED:  ['휴장',   'bg-gray-800 text-gray-500 border border-gray-700'],
+};
+
+// ── 탭 전환 ──────────────────────────────────────────────────────────────────
+function setTab(tab) {
+  activeTab = tab;
+  ['overview','holdings','watchlist'].forEach(t => {
+    document.getElementById(`pane-${t}`).classList.toggle('hidden', t !== tab);
+    document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+  });
+}
+
+// ── 포맷 헬퍼 ────────────────────────────────────────────────────────────────
+function fmtPrice(price, currency) {
+  if (price == null) return '—';
+  return currency === 'KRW'
+    ? price.toLocaleString('ko-KR') + '원'
+    : '$' + price.toFixed(2);
+}
+
+function getCurrentPrice(d) {
+  if (!d) return null;
+  if (d.marketState === 'PRE'  && d.preMarketPrice)  return d.preMarketPrice;
+  if (d.marketState === 'POST' && d.postMarketPrice) return d.postMarketPrice;
+  return d.price;
+}
+
+function fmtCurrentPrice(d, currency) {
+  if (!d) return '—';
+  const cur  = getCurrentPrice(d);
+  const base = fmtPrice(cur, currency);
+  let boatsHtml = '';
+  if (d.boatsPrice != null) {
+    const bFmt   = fmtPrice(d.boatsPrice, currency);
+    const bSign  = d.boatsChangePct != null ? (d.boatsChangePct >= 0 ? '+' : '') + d.boatsChangePct.toFixed(2) + '%' : null;
+    const bColor = d.boatsChangePct == null ? 'text-blue-300' : d.boatsChangePct > 0 ? 'text-green-400' : d.boatsChangePct < 0 ? 'text-red-400' : 'text-blue-300';
+    boatsHtml = `<span class="text-[11px] font-normal text-gray-500 mx-1">/</span>`
+      + `<span class="${bColor} text-[13px] font-semibold">${bFmt}</span>`
+      + `<span class="text-[10px] text-blue-400/70 ml-0.5">BOATS${bSign ? ` ${bSign}` : ''}</span>`;
   }
-
-  // 현재 가장 최신 가격 반환 (프리>정규>애프터 순 우선순위)
-  function getCurrentPrice(d) {
-    if (!d) return null;
-    if (d.marketState === 'PRE'  && d.preMarketPrice)  return d.preMarketPrice;
-    if (d.marketState === 'POST' && d.postMarketPrice) return d.postMarketPrice;
-    return d.price;
+  let stateHtml = '';
+  if ((d.marketState === 'POST' && d.postMarketPrice) || (d.marketState === 'PRE' && d.preMarketPrice)) {
+    const label = d.marketState === 'POST' ? '애프터' : '프리';
+    stateHtml = `<span class="text-[11px] font-normal text-yellow-400 ml-1.5 align-middle">${label}</span>`;
   }
+  return base + stateHtml + boatsHtml;
+}
 
-  function fmtCurrentPrice(d, currency) {
-    if (!d) return '—';
-    const cur  = getCurrentPrice(d);
-    const base = fmtPrice(cur, currency);
+function fmtCurrentChange(d, currency) {
+  if (!d) return '<span class="text-gray-500">—</span>';
+  if (d.marketState === 'POST' && d.postMarketChange != null)
+    return fmtChange(d.postMarketChange, d.postMarketChangePct, currency)
+      + `<span class="text-xs text-gray-500 ml-1">/ 종가 ${fmtPrice(d.price, currency)}</span>`;
+  if (d.marketState === 'PRE' && d.preMarketChange != null)
+    return fmtChange(d.preMarketChange, d.preMarketChangePct, currency)
+      + `<span class="text-xs text-gray-500 ml-1">/ 종가 ${fmtPrice(d.price, currency)}</span>`;
+  return fmtChange(d.change, d.changePercent, currency);
+}
 
-    // BOATS 가격 표시
-    let boatsHtml = '';
-    if (d.boatsPrice != null) {
-      const bFmt = fmtPrice(d.boatsPrice, currency);
-      const bSign = d.boatsChangePct != null
-        ? (d.boatsChangePct >= 0 ? '+' : '') + d.boatsChangePct.toFixed(2) + '%'
-        : null;
-      const bColor = d.boatsChangePct == null ? 'text-blue-300'
-        : d.boatsChangePct > 0 ? 'text-green-400'
-        : d.boatsChangePct < 0 ? 'text-red-400' : 'text-blue-300';
-      boatsHtml = `<span class="text-[11px] font-normal text-gray-500 mx-1">/</span>`
-        + `<span class="${bColor} text-[13px] font-semibold">${bFmt}</span>`
-        + `<span class="text-[10px] text-blue-400/70 ml-0.5">BOATS${bSign ? ` ${bSign}` : ''}</span>`;
-    }
+function fmtChange(change, pct, currency) {
+  if (change == null || pct == null) return '<span class="text-gray-500">—</span>';
+  const cls   = change > 0 ? 'text-green-400' : change < 0 ? 'text-red-400' : 'text-gray-400';
+  const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '─';
+  const abs   = currency === 'KRW'
+    ? Math.abs(change).toLocaleString('ko-KR') + '원'
+    : Math.abs(change).toFixed(2);
+  const sign  = change >= 0 ? '+' : '';
+  return `<span class="${cls}">${arrow} ${abs} (${sign}${pct.toFixed(2)}%)</span>`;
+}
 
-    // 정규장 외 시간대면 라벨 추가
-    let stateHtml = '';
-    if ((d.marketState === 'POST' && d.postMarketPrice) ||
-        (d.marketState === 'PRE'  && d.preMarketPrice)) {
-      const label = d.marketState === 'POST' ? '애프터' : '프리';
-      stateHtml = `<span class="text-[11px] font-normal text-yellow-400 ml-1.5 align-middle">${label}</span>`;
-    }
+// ── 종목 카드 렌더 ───────────────────────────────────────────────────────────
+function renderCard(stock, isHolding) {
+  const d        = pricesData.stocks?.[stock.ticker];
+  const p        = getCurrentPrice(d);
+  const currency = d?.currency || stock.currency;
+  const alerts   = stock.alerts || {};
+  const saved    = localSettings[stock.ticker] || {};
 
-    return base + stateHtml + boatsHtml;
-  }
+  const alertBuy  = p != null && ((alerts.buy2  != null && p <= alerts.buy2)  || (alerts.buy1  != null && p <= alerts.buy1));
+  const alertSell = p != null && ((alerts.sell2 != null && p >= alerts.sell2) || (alerts.sell1 != null && p >= alerts.sell1));
+  const cardExtra = alertBuy ? 'card-alert-buy' : alertSell ? 'card-alert-sell' : '';
 
-  function fmtCurrentChange(d, currency) {
-    if (!d) return '<span class="text-gray-500">—</span>';
-    if (d.marketState === 'POST' && d.postMarketChange != null) {
-      return fmtChange(d.postMarketChange, d.postMarketChangePct, currency)
-        + `<span class="text-xs text-gray-500 ml-1">/ 종가 ${fmtPrice(d.price, currency)}</span>`;
-    }
-    if (d.marketState === 'PRE' && d.preMarketChange != null) {
-      return fmtChange(d.preMarketChange, d.preMarketChangePct, currency)
-        + `<span class="text-xs text-gray-500 ml-1">/ 종가 ${fmtPrice(d.price, currency)}</span>`;
-    }
-    return fmtChange(d.change, d.changePercent, currency);
-  }
+  const [mLabel, mClass] = MARKET_BADGE[d?.marketState] || ['—', 'bg-gray-800 text-gray-500 border border-gray-700'];
 
-  function fmtChange(change, pct, currency) {
-    if (change == null || pct == null) return '<span class="text-gray-500">—</span>';
-    const cls   = change > 0 ? 'text-green-400' : change < 0 ? 'text-red-400' : 'text-gray-400';
-    const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '─';
-    const abs   = currency === 'KRW'
-      ? Math.abs(change).toLocaleString('ko-KR') + '원'
-      : Math.abs(change).toFixed(2);
-    const sign  = change >= 0 ? '+' : '';
-    return `<span class="${cls}">${arrow} ${abs} (${sign}${pct.toFixed(2)}%)</span>`;
-  }
-
-  // ── 카드 렌더 ─────────────────────────────────────────────────────────────
-  function renderCard(stock, isHolding) {
-    const d        = pricesData.stocks?.[stock.ticker];
-    const p        = getCurrentPrice(d);
-    const currency = d?.currency || stock.currency;
-    const alerts   = stock.alerts || {};
-    const saved    = localSettings[stock.ticker] || {};
-
-    // 알림 활성 여부
-    const alertBuy  = p != null && ((alerts.buy2  != null && p <= alerts.buy2)  || (alerts.buy1  != null && p <= alerts.buy1));
-    const alertSell = p != null && ((alerts.sell2 != null && p >= alerts.sell2) || (alerts.sell1 != null && p >= alerts.sell1));
-    const cardExtra = alertBuy ? 'card-alert-buy' : alertSell ? 'card-alert-sell' : '';
-
-    // 마켓 배지
-    const [mLabel, mClass] = MARKET_BADGE[d?.marketState] || ['—', 'bg-gray-800 text-gray-500 border border-gray-700'];
-
-    // P&L (보유 종목)
-    let pnlHtml = '';
-    if (isHolding) {
-      const avg = parseFloat(saved.avgCost);
-      const qty = parseFloat(saved.quantity);
-      if (avg && p) {
-        const pnlPct = ((p - avg) / avg) * 100;
-        const pnlCls = pnlPct >= 0 ? 'text-green-400' : 'text-red-400';
-        const sign   = pnlPct >= 0 ? '+' : '';
-        const qtyRow = qty ? `
-          <div class="flex justify-between">
-            <span>평가손익</span>
-            <span class="${pnlCls}">${sign}${fmtPrice((p - avg) * qty, currency)}</span>
-          </div>` : '';
-        pnlHtml = `
-          <div class="mt-3 pt-3 border-t border-gray-800 space-y-1.5 text-xs text-gray-400">
-            <div class="flex justify-between">
-              <span>평단가</span>
-              <span class="text-gray-200">${fmtPrice(avg, currency)}</span>
-            </div>
-            <div class="flex justify-between">
-              <span>수익률</span>
-              <span class="${pnlCls} font-semibold">${sign}${pnlPct.toFixed(2)}%</span>
-            </div>
-            ${qtyRow}
-          </div>`;
-      } else {
-        pnlHtml = `
-          <div class="mt-3 pt-3 border-t border-gray-800">
-            <button onclick="openSettings()"
-              class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-              ⚙️ 평단가 설정하기
-            </button>
-          </div>`;
-      }
-    }
-
-    // 알림 태그
-    const tagBase    = 'text-xs px-2 py-0.5 rounded font-medium';
-    const activeBuy  = alertBuy  ? 'animate-pulse' : '';
-    const activeSell = alertSell ? 'animate-pulse' : '';
-    const tags = [
-      alerts.buy2  != null && `<span class="${tagBase} ${activeBuy}  ${p != null && p <= alerts.buy2  ? 'bg-green-500/30 text-green-300' : 'bg-green-900/20 text-green-700'}">추매 ${fmtPrice(alerts.buy2,  currency)}</span>`,
-      alerts.buy1  != null && `<span class="${tagBase} ${activeBuy}  ${p != null && p <= alerts.buy1  ? 'bg-green-500/30 text-green-300' : 'bg-green-900/20 text-green-700'}">매수 ${fmtPrice(alerts.buy1,  currency)}</span>`,
-      alerts.sell1 != null && `<span class="${tagBase} ${activeSell} ${p != null && p >= alerts.sell1 ? 'bg-red-500/30   text-red-300'   : 'bg-red-900/20   text-red-700'  }">익절 ${fmtPrice(alerts.sell1, currency)}</span>`,
-      alerts.sell2 != null && `<span class="${tagBase} ${activeSell} ${p != null && p >= alerts.sell2 ? 'bg-red-500/30   text-red-300'   : 'bg-red-900/20   text-red-700'  }">익절2 ${fmtPrice(alerts.sell2, currency)}</span>`,
-    ].filter(Boolean);
-
-    return `
-      <div class="bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-all ${cardExtra}">
-        <div class="flex items-start justify-between mb-2 gap-2">
-          <div class="min-w-0">
-            <div class="font-semibold text-white text-sm leading-snug truncate">${stock.name}</div>
-            <div class="text-xs text-gray-500 mt-0.5">${stock.ticker}</div>
-          </div>
-          <span class="text-xs px-2 py-0.5 rounded shrink-0 ${mClass}">${mLabel}</span>
-        </div>
-        <div class="text-2xl font-bold text-white mb-0.5 tracking-tight leading-tight">
-          ${fmtCurrentPrice(d, currency)}
-        </div>
-        <div class="text-sm">${fmtCurrentChange(d, currency)}</div>
-        ${pnlHtml}
-        ${tags.length ? `<div class="mt-2 flex flex-wrap gap-1">${tags.join('')}</div>` : ''}
-        ${stock.notes ? `<div class="mt-2 text-xs text-gray-500 leading-relaxed">📌 ${stock.notes}</div>` : ''}
-      </div>`;
-  }
-
-  // ── 섹션 렌더 ────────────────────────────────────────────────────────────
-  function renderSection(title, stocks, isHolding) {
-    if (!stocks.length) return '';
-    const cards = stocks.map(s => renderCard(s, isHolding)).join('');
-    return `
-      <section>
-        <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">${title}</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          ${cards}
-        </div>
-      </section>`;
-  }
-
-  // ── 전체 대시보드 렌더 ───────────────────────────────────────────────────
-  function renderDashboard() {
-    const main = document.getElementById('main-content');
-    let html   = '';
-
-    // 보유 종목 (holdings)
-    if (watchlistCfg.holdings?.length) {
-      html += renderSection('💼 보유 종목', watchlistCfg.holdings, true);
-    }
-
-    // 주시 종목 카테고리별
-    const cats = {};
-    for (const s of (watchlistCfg.watchlist ?? [])) {
-      (cats[s.category] ??= []).push(s);
-    }
-    for (const [cat, stocks] of Object.entries(cats)) {
-      const meta = CATEGORY_META[cat] || { icon: '📌', label: cat };
-      html += renderSection(`${meta.icon} ${meta.label}`, stocks, false);
-    }
-
-    main.innerHTML = html || '<p class="text-gray-500 text-sm">종목 데이터 없음</p>';
-  }
-
-  // ── 데이터 로드 ──────────────────────────────────────────────────────────
-  async function loadData() {
-    document.getElementById('last-updated').textContent = '로딩 중...';
-    try {
-      const t = Date.now();
-      const [pr, wl] = await Promise.all([
-        fetch(`data/prices.json?t=${t}`).then(r => r.json()),
-        fetch(`data/watchlist.json?t=${t}`).then(r => r.json()),
-      ]);
-      pricesData   = pr;
-      watchlistCfg = wl;
-
-      const dt  = new Date(pr.lastUpdated);
-      const kst = dt.toLocaleString('ko-KR', {
-        timeZone: 'Asia/Seoul',
-        month: 'numeric', day: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-      });
-      document.getElementById('last-updated').textContent = `업데이트: ${kst}`;
-      renderDashboard();
-    } catch (e) {
-      document.getElementById('last-updated').textContent = '로드 실패';
-      console.error(e);
-    }
-  }
-
-  // ── 설정 모달 ────────────────────────────────────────────────────────────
-  function loadLocalSettings() {
-    try { localSettings = JSON.parse(localStorage.getItem('investSettings') || '{}'); }
-    catch { localSettings = {}; }
-  }
-
-  function openSettings() {
-    const fields = document.getElementById('settings-fields');
-    fields.innerHTML = (watchlistCfg.holdings ?? []).map(stock => {
-      const saved = localSettings[stock.ticker] || {};
-      const cur   = stock.currency;
-      return `
-        <div class="space-y-2">
-          <div class="text-sm font-medium text-gray-300">${stock.name}
-            <span class="text-gray-500 font-normal">(${stock.ticker})</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="text-xs text-gray-500 block mb-1">평단가 (${cur})</label>
-              <input id="avg_${stock.ticker}" type="number" step="0.01"
-                placeholder="${cur === 'KRW' ? '예: 25000' : '예: 68.89'}"
-                value="${saved.avgCost || ''}"
-                class="w-full bg-gray-800 border border-gray-700 focus:border-blue-500 rounded-lg px-3 py-2 text-sm text-white outline-none transition-colors">
-            </div>
-            <div>
-              <label class="text-xs text-gray-500 block mb-1">보유 수량</label>
-              <input id="qty_${stock.ticker}" type="number" step="0.01"
-                placeholder="예: 30.8"
-                value="${saved.quantity || ''}"
-                class="w-full bg-gray-800 border border-gray-700 focus:border-blue-500 rounded-lg px-3 py-2 text-sm text-white outline-none transition-colors">
-            </div>
-          </div>
+  let pnlHtml = '';
+  if (isHolding) {
+    const avg = parseFloat(saved.avgCost);
+    const qty = parseFloat(saved.quantity);
+    if (avg && p) {
+      const pnlPct = ((p - avg) / avg) * 100;
+      const pnlCls = pnlPct >= 0 ? 'text-green-400' : 'text-red-400';
+      const sign   = pnlPct >= 0 ? '+' : '';
+      const qtyRow = qty ? `
+        <div class="flex justify-between">
+          <span>평가손익</span>
+          <span class="${pnlCls}">${sign}${fmtPrice((p - avg) * qty, currency)}</span>
+        </div>` : '';
+      pnlHtml = `
+        <div class="mt-3 pt-3 border-t border-gray-800 space-y-1.5 text-xs text-gray-400">
+          <div class="flex justify-between"><span>평단가</span><span class="text-gray-200">${fmtPrice(avg, currency)}</span></div>
+          <div class="flex justify-between"><span>수익률</span><span class="${pnlCls} font-semibold">${sign}${pnlPct.toFixed(2)}%</span></div>
+          ${qtyRow}
         </div>`;
-    }).join('');
-    document.getElementById('settings-modal').classList.remove('hidden');
-  }
-
-  function closeSettings() {
-    document.getElementById('settings-modal').classList.add('hidden');
-  }
-
-  function saveSettings() {
-    for (const stock of (watchlistCfg.holdings ?? [])) {
-      const avgEl = document.getElementById(`avg_${stock.ticker}`);
-      const qtyEl = document.getElementById(`qty_${stock.ticker}`);
-      if (avgEl?.value) {
-        localSettings[stock.ticker] = {
-          avgCost:  parseFloat(avgEl.value),
-          quantity: qtyEl?.value ? parseFloat(qtyEl.value) : null,
-        };
-      } else {
-        delete localSettings[stock.ticker];
-      }
+    } else {
+      pnlHtml = `
+        <div class="mt-3 pt-3 border-t border-gray-800">
+          <button onclick="openSettings()" class="text-xs text-blue-400 hover:text-blue-300 transition-colors">⚙️ 평단가 설정하기</button>
+        </div>`;
     }
-    localStorage.setItem('investSettings', JSON.stringify(localSettings));
-    closeSettings();
-    renderDashboard();
   }
 
-  // ── 5분마다 자동 갱신 ────────────────────────────────────────────────────
-  setInterval(loadData, 5 * 60 * 1000);
+  const tagBase    = 'text-xs px-2 py-0.5 rounded font-medium';
+  const activeBuy  = alertBuy  ? 'animate-pulse' : '';
+  const activeSell = alertSell ? 'animate-pulse' : '';
+  const tags = [
+    alerts.buy2  != null && `<span class="${tagBase} ${activeBuy}  ${p != null && p <= alerts.buy2  ? 'bg-green-500/30 text-green-300' : 'bg-green-900/20 text-green-700'}">추매 ${fmtPrice(alerts.buy2,  currency)}</span>`,
+    alerts.buy1  != null && `<span class="${tagBase} ${activeBuy}  ${p != null && p <= alerts.buy1  ? 'bg-green-500/30 text-green-300' : 'bg-green-900/20 text-green-700'}">매수 ${fmtPrice(alerts.buy1,  currency)}</span>`,
+    alerts.sell1 != null && `<span class="${tagBase} ${activeSell} ${p != null && p >= alerts.sell1 ? 'bg-red-500/30   text-red-300'   : 'bg-red-900/20   text-red-700'  }">익절 ${fmtPrice(alerts.sell1, currency)}</span>`,
+    alerts.sell2 != null && `<span class="${tagBase} ${activeSell} ${p != null && p >= alerts.sell2 ? 'bg-red-500/30   text-red-300'   : 'bg-red-900/20   text-red-700'  }">익절2 ${fmtPrice(alerts.sell2, currency)}</span>`,
+  ].filter(Boolean);
 
-  // ── 초기 실행 ────────────────────────────────────────────────────────────
-  loadLocalSettings();
-  loadData();
-  </script>
+  return `
+    <div class="bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-all ${cardExtra}">
+      <div class="flex items-start justify-between mb-2 gap-2">
+        <div class="min-w-0">
+          <div class="font-semibold text-white text-sm leading-snug truncate">${stock.name}</div>
+          <div class="text-xs text-gray-500 mt-0.5">${stock.ticker}</div>
+        </div>
+        <span class="text-xs px-2 py-0.5 rounded shrink-0 ${mClass}">${mLabel}</span>
+      </div>
+      <div class="text-2xl font-bold text-white mb-0.5 tracking-tight leading-tight">${fmtCurrentPrice(d, currency)}</div>
+      <div class="text-sm">${fmtCurrentChange(d, currency)}</div>
+      ${pnlHtml}
+      ${tags.length ? `<div class="mt-2 flex flex-wrap gap-1">${tags.join('')}</div>` : ''}
+      ${stock.notes ? `<div class="mt-2 text-xs text-gray-500 leading-relaxed">📌 ${stock.notes}</div>` : ''}
+    </div>`;
+}
+
+function renderSection(title, stocks, isHolding) {
+  if (!stocks.length) return '';
+  return `
+    <section class="mb-6">
+      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">${title}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        ${stocks.map(s => renderCard(s, isHolding)).join('')}
+      </div>
+    </section>`;
+}
+
+// ── 매크로 카드 렌더 + 스파크라인 ───────────────────────────────────────────
+function renderMacroGrid() {
+  const grid = document.getElementById('macro-grid');
+  const macros = macrosData.macros || {};
+
+  if (!Object.keys(macros).length) {
+    grid.innerHTML = '<div class="col-span-full text-sm text-gray-600 text-center py-4">매크로 데이터 없음</div>';
+    return;
+  }
+
+  // 기존 차트 제거
+  Object.values(chartInstances).forEach(c => c.destroy());
+  chartInstances = {};
+
+  const cards = Object.entries(macros).map(([ticker, m]) => {
+    const pct    = m.changePercent;
+    const pctCls = pct == null ? 'text-gray-500' : pct > 0 ? 'text-green-400' : pct < 0 ? 'text-red-400' : 'text-gray-400';
+    const sign   = pct != null && pct >= 0 ? '+' : '';
+    const priceFmt = m.price != null ? m.price.toLocaleString('en-US', { maximumFractionDigits: 2 }) : '—';
+    const canvasId = `chart-${ticker.replace(/[^a-zA-Z0-9]/g,'_')}`;
+
+    return `
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 hover:border-gray-600 transition-all">
+        <div class="flex items-start justify-between mb-1">
+          <div>
+            <div class="text-xs font-semibold text-white">${m.name}</div>
+            <div class="text-[10px] text-gray-500">${m.label}</div>
+          </div>
+          <span class="${pctCls} text-xs font-medium">${pct != null ? sign + pct.toFixed(2) + '%' : '—'}</span>
+        </div>
+        <div class="text-lg font-bold text-white tracking-tight">${priceFmt}</div>
+        <div class="macro-canvas-wrap mt-2">
+          <canvas id="${canvasId}"></canvas>
+        </div>
+      </div>`;
+  }).join('');
+
+  grid.innerHTML = cards;
+
+  // 차트 그리기
+  for (const [ticker, m] of Object.entries(macros)) {
+    const hist = (m.history || []).slice(-30);
+    if (hist.length < 2) continue;
+    const canvasId = `chart-${ticker.replace(/[^a-zA-Z0-9]/g,'_')}`;
+    const ctx = document.getElementById(canvasId)?.getContext('2d');
+    if (!ctx) continue;
+
+    const first = hist[0].close, last = hist[hist.length - 1].close;
+    const isUp = last >= first;
+    const color = isUp ? '#22c55e' : '#ef4444';
+    const fill  = isUp ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
+
+    chartInstances[ticker] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: hist.map(e => e.date),
+        datasets: [{
+          data: hist.map(e => e.close),
+          borderColor: color,
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: true,
+          backgroundColor: fill,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: { x: { display: false }, y: { display: false } },
+        animation: { duration: 0 },
+      }
+    });
+  }
+}
+
+// ── Top performers 렌더 ──────────────────────────────────────────────────────
+function renderTopPerformers() {
+  const el = document.getElementById('top-performers');
+  const items = [];
+  for (const stock of (watchlistCfg.holdings || [])) {
+    const d    = pricesData.stocks?.[stock.ticker];
+    const p    = getCurrentPrice(d);
+    const saved = localSettings[stock.ticker] || {};
+    const avg  = parseFloat(saved.avgCost);
+    if (!avg || !p) continue;
+    const pnlPct = ((p - avg) / avg) * 100;
+    items.push({ stock, p, avg, pnlPct, currency: d?.currency || stock.currency });
+  }
+  if (!items.length) {
+    el.innerHTML = '<div class="text-sm text-gray-600">평단가 설정 후 표시됩니다.</div>';
+    return;
+  }
+  items.sort((a, b) => b.pnlPct - a.pnlPct);
+  el.innerHTML = items.slice(0, 4).map((it, i) => {
+    const medal = ['🥇','🥈','🥉','🏅'][i] || '';
+    const cls   = it.pnlPct >= 0 ? 'text-green-400' : 'text-red-400';
+    const sign  = it.pnlPct >= 0 ? '+' : '';
+    return `
+      <div class="flex items-center justify-between py-1.5 border-b border-gray-800 last:border-0">
+        <div class="flex items-center gap-2">
+          <span class="text-sm">${medal}</span>
+          <div>
+            <div class="text-sm font-medium text-white">${it.stock.name}</div>
+            <div class="text-xs text-gray-500">${fmtPrice(it.avg, it.currency)} → ${fmtPrice(it.p, it.currency)}</div>
+          </div>
+        </div>
+        <span class="${cls} font-bold text-sm">${sign}${it.pnlPct.toFixed(2)}%</span>
+      </div>`;
+  }).join('');
+}
+
+// ── 알림 종목 (종합 탭) ──────────────────────────────────────────────────────
+function renderAlertSection() {
+  const alertStocks = [...(watchlistCfg.holdings || []), ...(watchlistCfg.watchlist || [])].filter(stock => {
+    const d = pricesData.stocks?.[stock.ticker];
+    const p = getCurrentPrice(d);
+    if (!p) return false;
+    const a = stock.alerts || {};
+    return (a.buy2 != null && p <= a.buy2) || (a.buy1 != null && p <= a.buy1)
+        || (a.sell1 != null && p >= a.sell1) || (a.sell2 != null && p >= a.sell2);
+  });
+  const section = document.getElementById('alert-section');
+  const cards   = document.getElementById('alert-cards');
+  if (!alertStocks.length) { section.classList.add('hidden'); return; }
+  section.classList.remove('hidden');
+  const isHolding = ticker => (watchlistCfg.holdings || []).some(h => h.ticker === ticker);
+  cards.innerHTML = alertStocks.map(s => renderCard(s, isHolding(s.ticker))).join('');
+}
+
+// ── Fear & Greed 렌더 ────────────────────────────────────────────────────────
+async function loadFearGreed() {
+  try {
+    const res  = await fetch('https://api.alternative.me/fng/?limit=1');
+    const data = await res.json();
+    const d    = data?.data?.[0];
+    if (!d) return;
+
+    const val = parseInt(d.value);
+    const cls = val <= 25 ? 'text-red-500'
+              : val <= 45 ? 'text-orange-400'
+              : val <= 55 ? 'text-yellow-400'
+              : val <= 75 ? 'text-green-400'
+              :              'text-green-500';
+
+    document.getElementById('fg-value').textContent = val;
+    document.getElementById('fg-value').className   = `text-3xl font-bold mb-1 ${cls}`;
+    document.getElementById('fg-label').textContent = d.value_classification;
+    document.getElementById('fg-needle').style.left = `calc(${val}% - 4px)`;
+  } catch { /* 무시 */ }
+}
+
+// ── 종합 탭 전체 렌더 ────────────────────────────────────────────────────────
+function renderOverview() {
+  renderMacroGrid();
+  renderTopPerformers();
+  renderAlertSection();
+}
+
+// ── 보유 탭 렌더 ─────────────────────────────────────────────────────────────
+function renderHoldings() {
+  const el = document.getElementById('holdings-content');
+  if (!watchlistCfg.holdings?.length) {
+    el.innerHTML = '<p class="text-gray-500 text-sm">보유 종목 없음</p>';
+    return;
+  }
+  el.innerHTML = renderSection('💼 보유 종목', watchlistCfg.holdings, true);
+}
+
+// ── 관심 탭 렌더 ─────────────────────────────────────────────────────────────
+function renderWatchlist() {
+  const el   = document.getElementById('watchlist-content');
+  const cats = {};
+  for (const s of (watchlistCfg.watchlist ?? [])) {
+    (cats[s.category] ??= []).push(s);
+  }
+  const html = Object.entries(cats).map(([cat, stocks]) => {
+    const meta = CATEGORY_META[cat] || { icon: '📌', label: cat };
+    return renderSection(`${meta.icon} ${meta.label}`, stocks, false);
+  }).join('');
+  el.innerHTML = html || '<p class="text-gray-500 text-sm">관심 종목 없음</p>';
+}
+
+// ── 데이터 로드 ──────────────────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('last-updated').textContent = '로딩 중...';
+  try {
+    const t = Date.now();
+    const [pr, wl, mc] = await Promise.all([
+      fetch(`data/prices.json?t=${t}`).then(r => r.json()),
+      fetch(`data/watchlist.json?t=${t}`).then(r => r.json()),
+      fetch(`data/macros.json?t=${t}`).then(r => r.json()).catch(() => ({ macros: {} })),
+    ]);
+    pricesData   = pr;
+    watchlistCfg = wl;
+    macrosData   = mc;
+
+    const dt  = new Date(pr.lastUpdated);
+    const kst = dt.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    document.getElementById('last-updated').textContent = `업데이트: ${kst}`;
+
+    renderOverview();
+    renderHoldings();
+    renderWatchlist();
+    loadFearGreed();
+  } catch (e) {
+    document.getElementById('last-updated').textContent = '로드 실패';
+    console.error(e);
+  }
+}
+
+// ── 설정 모달 ────────────────────────────────────────────────────────────────
+function loadLocalSettings() {
+  try { localSettings = JSON.parse(localStorage.getItem('investSettings') || '{}'); }
+  catch { localSettings = {}; }
+}
+
+function openSettings() {
+  const fields = document.getElementById('settings-fields');
+  fields.innerHTML = (watchlistCfg.holdings ?? []).map(stock => {
+    const saved = localSettings[stock.ticker] || {};
+    const cur   = stock.currency;
+    return `
+      <div class="space-y-2">
+        <div class="text-sm font-medium text-gray-300">${stock.name}
+          <span class="text-gray-500 font-normal">(${stock.ticker})</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-xs text-gray-500 block mb-1">평단가 (${cur})</label>
+            <input id="avg_${stock.ticker}" type="number" step="0.01"
+              placeholder="${cur === 'KRW' ? '예: 25000' : '예: 68.89'}"
+              value="${saved.avgCost || ''}"
+              class="w-full bg-gray-800 border border-gray-700 focus:border-blue-500 rounded-lg px-3 py-2 text-sm text-white outline-none transition-colors">
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 block mb-1">보유 수량</label>
+            <input id="qty_${stock.ticker}" type="number" step="0.01"
+              placeholder="예: 30.8"
+              value="${saved.quantity || ''}"
+              class="w-full bg-gray-800 border border-gray-700 focus:border-blue-500 rounded-lg px-3 py-2 text-sm text-white outline-none transition-colors">
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.add('hidden');
+}
+
+function saveSettings() {
+  for (const stock of (watchlistCfg.holdings ?? [])) {
+    const avgEl = document.getElementById(`avg_${stock.ticker}`);
+    const qtyEl = document.getElementById(`qty_${stock.ticker}`);
+    if (avgEl?.value) {
+      localSettings[stock.ticker] = {
+        avgCost:  parseFloat(avgEl.value),
+        quantity: qtyEl?.value ? parseFloat(qtyEl.value) : null,
+      };
+    } else {
+      delete localSettings[stock.ticker];
+    }
+  }
+  localStorage.setItem('investSettings', JSON.stringify(localSettings));
+  closeSettings();
+  renderHoldings();
+  renderOverview();
+}
+
+// ── 자동 갱신 + 초기 실행 ────────────────────────────────────────────────────
+setInterval(loadData, 5 * 60 * 1000);
+loadLocalSettings();
+loadData();
+</script>
 </body>
 </html>

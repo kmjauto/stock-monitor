@@ -18,6 +18,9 @@ const PRICES_OUT  = path.join(ROOT, 'docs/data/prices.json');
 const WL_OUT      = path.join(ROOT, 'docs/data/watchlist.json');
 const ALERT_LOG   = path.join(ROOT, 'docs/data/alert_history.json');
 
+const HISTORY_DIR = path.join(ROOT, 'docs/data/history');
+const MACROS_OUT  = path.join(ROOT, 'docs/data/macros.json');
+
 const TELEGRAM_TOKEN   = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const ALERT_COOLDOWN_H = 4; // 동일 알림 재발송 대기 시간(시간)
@@ -30,8 +33,10 @@ const CRYPTO_MAP = {
 };
 
 // ── 데이터 로드 ─────────────────────────────────────────────────────────────
-const watchlist = JSON.parse(fs.readFileSync(CONFIG, 'utf8'));
+const watchlist  = JSON.parse(fs.readFileSync(CONFIG, 'utf8'));
 const allStocks  = [...(watchlist.holdings || []), ...(watchlist.watchlist || [])];
+const macroList  = watchlist.macros || [];
+const macroTickers = macroList.map(m => m.ticker);
 
 let alertHistory = {};
 if (fs.existsSync(ALERT_LOG)) {
@@ -283,6 +288,67 @@ async function maybeMorningSummary(prices) {
   alertHistory[summKey] = new Date().toISOString();
 }
 
+// ── 히스토리 (일봉 누적) ──────────────────────────────────────────────────────
+function tickerFile(ticker) {
+  return path.join(HISTORY_DIR, ticker.replace(/[^a-zA-Z0-9._-]/g, '_') + '.json');
+}
+
+function readHistFile(ticker) {
+  const f = tickerFile(ticker);
+  if (!fs.existsSync(f)) return null; // null = 미생성
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')); }
+  catch { return []; }
+}
+
+function writeHistFile(ticker, entries) {
+  const map = new Map(entries.map(e => [e.date, e.close]));
+  const sorted = [...map.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, close]) => ({ date, close }));
+  fs.writeFileSync(tickerFile(ticker), JSON.stringify(sorted, null, 2));
+}
+
+async function fetchYahooHistory(ticker) {
+  const url = `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=3mo`;
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
+    if (!res.ok) { console.error(`Yahoo history ${res.status}: ${ticker}`); return []; }
+    const data   = await res.json();
+    const result = data?.chart?.result?.[0];
+    if (!result) return [];
+    const ts     = result.timestamp || [];
+    const closes = result.indicators?.quote?.[0]?.close || [];
+    return ts
+      .map((t, i) => ({ date: new Date(t * 1000).toISOString().split('T')[0], close: closes[i] }))
+      .filter(e => e.close != null);
+  } catch (e) {
+    console.error(`Yahoo history 오류 [${ticker}]:`, e.message);
+    return [];
+  }
+}
+
+async function updateAllHistories(prices) {
+  if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
+  const today = new Date().toISOString().split('T')[0];
+
+  for (const ticker of Object.keys(prices)) {
+    const existing = readHistFile(ticker);
+    if (existing === null) {
+      // 첫 실행: 90일치 로드
+      console.log(`히스토리 초기 로드: ${ticker}`);
+      const hist = await fetchYahooHistory(ticker);
+      if (hist.length > 0) writeHistFile(ticker, hist);
+      await sleep(200);
+    } else {
+      // 오늘 가격 추가
+      const p = prices[ticker]?.price;
+      if (p != null) writeHistFile(ticker, [...existing, { date: today, close: p }]);
+    }
+  }
+}
+
 // ── 유틸 ─────────────────────────────────────────────────────────────────────
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -291,7 +357,10 @@ console.log(`\n[${new Date().toISOString()}] 가격 수집 시작`);
 
 // 티커 분류
 const cryptoTickers = allStocks.map(s => s.ticker).filter(t => CRYPTO_MAP[t]);
-const stockTickers  = allStocks.map(s => s.ticker).filter(t => !CRYPTO_MAP[t]);
+const stockTickers  = [
+  ...allStocks.map(s => s.ticker).filter(t => !CRYPTO_MAP[t]),
+  ...macroTickers,  // 매크로도 Yahoo로 조회
+];
 const boatsTickers  = allStocks.filter(s => s.boatsTicker).map(s => s.boatsTicker);
 
 // 병렬 조회
@@ -336,5 +405,27 @@ await maybeMorningSummary(allPrices);
 // alert_history.json 저장
 fs.writeFileSync(ALERT_LOG, JSON.stringify(alertHistory, null, 2));
 console.log('alert_history.json 저장');
+
+// 히스토리 업데이트 (매크로 + 전종목)
+console.log('히스토리 업데이트 시작...');
+await updateAllHistories(allPrices);
+console.log('히스토리 업데이트 완료');
+
+// macros.json 저장 (히스토리 업데이트 후 — 최신 파일 반영)
+const macrosOut = {};
+for (const m of macroList) {
+  const hist = readHistFile(m.ticker) || [];
+  macrosOut[m.ticker] = {
+    name:   m.name,
+    label:  m.label,
+    ...(allPrices[m.ticker] || {}),
+    history: hist.slice(-30), // 최근 30일
+  };
+}
+fs.writeFileSync(MACROS_OUT, JSON.stringify({
+  lastUpdated: new Date().toISOString(),
+  macros: macrosOut,
+}, null, 2));
+console.log('macros.json 저장');
 
 console.log('완료\n');

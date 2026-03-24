@@ -27,6 +27,14 @@
       "notes": ""
     }
   ],
+  "macros": [
+    { "ticker": "^VIX",     "name": "VIX",      "label": "공포지수" },
+    { "ticker": "CL=F",     "name": "WTI",      "label": "WTI 원유" },
+    { "ticker": "GC=F",     "name": "Gold",     "label": "금" },
+    { "ticker": "^TNX",     "name": "US10Y",    "label": "미국 10년물" },
+    { "ticker": "USDKRW=X", "name": "USD/KRW",  "label": "원달러" },
+    { "ticker": "HYG",      "name": "HYG",      "label": "하이일드 ETF" }
+  ],
   "watchlist": [
     {
       "ticker": "000720.KS",

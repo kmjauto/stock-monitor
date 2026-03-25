@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24T23:03:25.638Z",
+  "lastUpdated": "2026-03-25T00:01:01.671Z",
   "macros": {
     "^VIX": {
       "name": "VIX",
@@ -19,10 +19,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-10",
-          "close": 17.790000915527344
-        },
         {
           "date": "2026-02-11",
           "close": 17.649999618530273
@@ -138,15 +134,19 @@
         {
           "date": "2026-03-24",
           "close": 26.95
+        },
+        {
+          "date": "2026-03-25",
+          "close": 26.95
         }
       ]
     },
     "CL=F": {
       "name": "WTI",
       "label": "WTI 원유",
-      "price": 88.79,
-      "change": -3.559999999999988,
-      "changePercent": -3.8548998375744326,
+      "price": 88.81,
+      "change": -3.539999999999992,
+      "changePercent": -3.833243096913906,
       "prevClose": 92.35,
       "high": null,
       "low": null,
@@ -159,10 +159,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-10",
-          "close": 63.959999084472656
-        },
         {
           "date": "2026-02-11",
           "close": 64.62999725341797
@@ -278,15 +274,19 @@
         {
           "date": "2026-03-24",
           "close": 88.79
+        },
+        {
+          "date": "2026-03-25",
+          "close": 88.81
         }
       ]
     },
     "GC=F": {
       "name": "Gold",
       "label": "금",
-      "price": 4475.6,
-      "change": 73.60000000000036,
-      "changePercent": 1.6719672875965552,
+      "price": 4544.6,
+      "change": 142.60000000000036,
+      "changePercent": 3.239436619718318,
       "prevClose": 4402,
       "high": null,
       "low": null,
@@ -299,10 +299,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-10",
-          "close": 5003.7998046875
-        },
         {
           "date": "2026-02-11",
           "close": 5071.60009765625
@@ -418,6 +414,10 @@
         {
           "date": "2026-03-24",
           "close": 4475.6
+        },
+        {
+          "date": "2026-03-25",
+          "close": 4544.6
         }
       ]
     },
@@ -439,10 +439,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-10",
-          "close": 4.146999835968018
-        },
         {
           "date": "2026-02-11",
           "close": 4.171999931335449
@@ -558,15 +554,19 @@
         {
           "date": "2026-03-24",
           "close": 4.392
+        },
+        {
+          "date": "2026-03-25",
+          "close": 4.392
         }
       ]
     },
     "USDKRW=X": {
       "name": "USD/KRW",
       "label": "원달러",
-      "price": 1498.34,
-      "change": 12.039999999999964,
-      "changePercent": 0.8100652627329585,
+      "price": 1492.68,
+      "change": 6.380000000000109,
+      "changePercent": 0.4292538518468754,
       "prevClose": 1486.3,
       "high": null,
       "low": null,
@@ -579,10 +579,6 @@
       "postMarketChange": null,
       "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-11",
-          "close": 1455.3299560546875
-        },
         {
           "date": "2026-02-12",
           "close": 1444.18994140625
@@ -698,6 +694,10 @@
         {
           "date": "2026-03-24",
           "close": 1498.34
+        },
+        {
+          "date": "2026-03-25",
+          "close": 1492.68
         }
       ]
     },
@@ -711,18 +711,14 @@
       "high": null,
       "low": null,
       "currency": "USD",
-      "marketState": "POST",
+      "marketState": "CLOSED",
       "preMarketPrice": null,
       "preMarketChange": null,
       "preMarketChangePct": null,
-      "postMarketPrice": 79.18,
-      "postMarketChange": -0.2599999999999909,
-      "postMarketChangePct": -0.3272910372608144,
+      "postMarketPrice": null,
+      "postMarketChange": null,
+      "postMarketChangePct": null,
       "history": [
-        {
-          "date": "2026-02-10",
-          "close": 80.83999633789062
-        },
         {
           "date": "2026-02-11",
           "close": 80.83000183105469
@@ -837,6 +833,10 @@
         },
         {
           "date": "2026-03-24",
+          "close": 79.17
+        },
+        {
+          "date": "2026-03-25",
           "close": 79.17
         }
       ]

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25T00:01:01.671Z",
+  "lastUpdated": "2026-03-25T05:26:12.689Z",
   "macros": {
     "^VIX": {
       "name": "VIX",
@@ -144,9 +144,9 @@
     "CL=F": {
       "name": "WTI",
       "label": "WTI 원유",
-      "price": 88.81,
-      "change": -3.539999999999992,
-      "changePercent": -3.833243096913906,
+      "price": 88.66,
+      "change": -3.6899999999999977,
+      "changePercent": -3.995668651867892,
       "prevClose": 92.35,
       "high": null,
       "low": null,
@@ -277,16 +277,16 @@
         },
         {
           "date": "2026-03-25",
-          "close": 88.81
+          "close": 88.66
         }
       ]
     },
     "GC=F": {
       "name": "Gold",
       "label": "금",
-      "price": 4544.6,
-      "change": 142.60000000000036,
-      "changePercent": 3.239436619718318,
+      "price": 4565.2,
+      "change": 163.19999999999982,
+      "changePercent": 3.7074057246706005,
       "prevClose": 4402,
       "high": null,
       "low": null,
@@ -417,7 +417,7 @@
         },
         {
           "date": "2026-03-25",
-          "close": 4544.6
+          "close": 4565.2
         }
       ]
     },
@@ -564,10 +564,10 @@
     "USDKRW=X": {
       "name": "USD/KRW",
       "label": "원달러",
-      "price": 1492.68,
-      "change": 6.380000000000109,
-      "changePercent": 0.4292538518468754,
-      "prevClose": 1486.3,
+      "price": 1498.74,
+      "change": -0.2999999999999545,
+      "changePercent": -0.020012808197243204,
+      "prevClose": 1499.04,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -697,7 +697,7 @@
         },
         {
           "date": "2026-03-25",
-          "close": 1492.68
+          "close": 1498.74
         }
       ]
     },

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25T00:01:00.921Z",
+  "lastUpdated": "2026-03-25T05:26:12.640Z",
   "stocks": {
     "SLV": {
       "price": 62.95,
@@ -34,10 +34,10 @@
       "postMarketChangePct": null
     },
     "139230.KS": {
-      "price": 15230,
-      "change": 205,
-      "changePercent": 1.3643926788685523,
-      "prevClose": 15025,
+      "price": 15825,
+      "change": 595,
+      "changePercent": 3.906762967826658,
+      "prevClose": 15230,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -50,10 +50,10 @@
       "postMarketChangePct": null
     },
     "000720.KS": {
-      "price": 149900,
-      "change": -4200,
-      "changePercent": -2.7255029201817003,
-      "prevClose": 154100,
+      "price": 158900,
+      "change": 9000,
+      "changePercent": 6.004002668445631,
+      "prevClose": 149900,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -67,9 +67,9 @@
     },
     "028050.KS": {
       "price": 33800,
-      "change": -2150,
-      "changePercent": -5.980528511821975,
-      "prevClose": 35950,
+      "change": 0,
+      "changePercent": 0,
+      "prevClose": 33800,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -82,10 +82,10 @@
       "postMarketChangePct": null
     },
     "003490.KS": {
-      "price": 24850,
-      "change": 550,
-      "changePercent": 2.263374485596708,
-      "prevClose": 24300,
+      "price": 25450,
+      "change": 600,
+      "changePercent": 2.414486921529175,
+      "prevClose": 24850,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -98,10 +98,10 @@
       "postMarketChangePct": null
     },
     "010120.KS": {
-      "price": 813000,
-      "change": -10000,
-      "changePercent": -1.2150668286755772,
-      "prevClose": 823000,
+      "price": 843000,
+      "change": 30000,
+      "changePercent": 3.6900369003690034,
+      "prevClose": 813000,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -114,10 +114,10 @@
       "postMarketChangePct": null
     },
     "298040.KS": {
-      "price": 2701000,
-      "change": 112000,
-      "changePercent": 4.325994592506759,
-      "prevClose": 2589000,
+      "price": 2970000,
+      "change": 269000,
+      "changePercent": 9.959274342835988,
+      "prevClose": 2701000,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -130,10 +130,10 @@
       "postMarketChangePct": null
     },
     "034020.KS": {
-      "price": 100100,
-      "change": -600,
-      "changePercent": -0.5958291956305859,
-      "prevClose": 100700,
+      "price": 103100,
+      "change": 3000,
+      "changePercent": 2.997002997002997,
+      "prevClose": 100100,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -162,10 +162,10 @@
       "postMarketChangePct": null
     },
     "005490.KS": {
-      "price": 339500,
-      "change": 14500,
-      "changePercent": 4.461538461538462,
-      "prevClose": 325000,
+      "price": 341500,
+      "change": 2000,
+      "changePercent": 0.5891016200294551,
+      "prevClose": 339500,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -178,10 +178,10 @@
       "postMarketChangePct": null
     },
     "454910.KS": {
-      "price": 86000,
-      "change": 2800,
-      "changePercent": 3.3653846153846154,
-      "prevClose": 83200,
+      "price": 88400,
+      "change": 2400,
+      "changePercent": 2.7906976744186047,
+      "prevClose": 86000,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -210,9 +210,9 @@
       "postMarketChangePct": null
     },
     "CL=F": {
-      "price": 88.81,
-      "change": -3.539999999999992,
-      "changePercent": -3.833243096913906,
+      "price": 88.66,
+      "change": -3.6899999999999977,
+      "changePercent": -3.995668651867892,
       "prevClose": 92.35,
       "high": null,
       "low": null,
@@ -226,9 +226,9 @@
       "postMarketChangePct": null
     },
     "GC=F": {
-      "price": 4544.6,
-      "change": 142.60000000000036,
-      "changePercent": 3.239436619718318,
+      "price": 4565.2,
+      "change": 163.19999999999982,
+      "changePercent": 3.7074057246706005,
       "prevClose": 4402,
       "high": null,
       "low": null,
@@ -258,10 +258,10 @@
       "postMarketChangePct": null
     },
     "USDKRW=X": {
-      "price": 1492.68,
-      "change": 6.380000000000109,
-      "changePercent": 0.4292538518468754,
-      "prevClose": 1486.3,
+      "price": 1498.74,
+      "change": -0.2999999999999545,
+      "changePercent": -0.020012808197243204,
+      "prevClose": 1499.04,
       "high": null,
       "low": null,
       "currency": "KRW",
@@ -290,20 +290,20 @@
       "postMarketChangePct": null
     },
     "BTC-USD": {
-      "price": 70541,
-      "change": -375.6781559794502,
-      "changePercent": -0.5297458450509421,
-      "prevClose": 70916.67815597945,
+      "price": 71094,
+      "change": 933.8905395368929,
+      "changePercent": 1.3310847812504663,
+      "prevClose": 70160.1094604631,
       "high": null,
       "low": null,
       "currency": "USD",
       "marketState": "REGULAR"
     },
     "SOL-USD": {
-      "price": 90.83,
-      "change": -0.6214481717856369,
-      "changePercent": -0.679538907484862,
-      "prevClose": 91.45144817178563,
+      "price": 92.41,
+      "change": 2.3104027595150143,
+      "changePercent": 2.564276456584278,
+      "prevClose": 90.09959724048498,
       "high": null,
       "low": null,
       "currency": "USD",
@@ -311,9 +311,9 @@
     },
     "XRP-USD": {
       "price": 1.42,
-      "change": -0.016671142535911256,
-      "changePercent": -1.160400737672264,
-      "prevClose": 1.436671142535911,
+      "change": 0.008019511435311717,
+      "changePercent": 0.567961915923055,
+      "prevClose": 1.4119804885646883,
       "high": null,
       "low": null,
       "currency": "USD",

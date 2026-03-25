@@ -28,10 +28,11 @@ jobs:
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
         run: node scripts/fetch-prices.mjs
 
-      - name: 변경사항 커밋 & 푸시
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/prices.json docs/data/watchlist.json docs/data/alert_history.json docs/data/macros.json docs/data/history/
-          git diff --staged --quiet || git commit -m "📊 가격 업데이트 $(date -u +'%m/%d %H:%M UTC')"
-          git push
+      # 커밋 & 푸시 비활성화 (HTML 대시보드 업데이트 중단, 텔레그램 알림은 유지)
+      # - name: 변경사항 커밋 & 푸시
+      #   run: |
+      #     git config user.name  "github-actions[bot]"
+      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     git add docs/data/prices.json docs/data/watchlist.json docs/data/alert_history.json docs/data/macros.json docs/data/history/
+      #     git diff --staged --quiet || git commit -m "📊 가격 업데이트 $(date -u +'%m/%d %H:%M UTC')"
+      #     git push
